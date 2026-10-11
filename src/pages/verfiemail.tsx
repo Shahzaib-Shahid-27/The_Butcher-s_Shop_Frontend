@@ -1,0 +1,150 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Mail, ArrowLeft, ShieldCheck } from "lucide-react";
+import { forgotPassword } from "../services/authService";
+
+export default function VerifyEmail() {
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleVerify = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setMessage("");
+    setLoading(true);
+
+    try {
+      await forgotPassword({ email: email.trim() });
+
+      navigate("/forgetpass", {
+        state: { email: email.trim() },
+      });
+    } catch (error: unknown) {
+      const err = error as {
+        response?: { data?: { message?: string } };
+        message?: string;
+      };
+
+      setMessage(
+        err.response?.data?.message ??
+          "Email does not exist. Please enter a registered email."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const inputContainerStyle =
+    "flex items-center gap-3 rounded-xl border border-blue-900/40 bg-[#060b19] px-4 transition focus-within:border-cyan-400 focus-within:ring-1 focus-within:ring-cyan-400/50";
+
+  return (
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#030712] px-4 py-12 font-sans text-slate-100 selection:bg-cyan-500 selection:text-white">
+      {/* Background glow effects */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -left-20 top-20 h-72 w-72 rounded-3xl bg-blue-600/10 blur-3xl" />
+        <div className="absolute right-10 top-1/3 h-80 w-80 rounded-3xl bg-cyan-500/10 blur-3xl" />
+        <div className="absolute -bottom-20 left-1/3 h-96 w-96 rounded-3xl bg-blue-700/10 blur-3xl" />
+      </div>
+
+      <div className="relative w-full max-w-5xl">
+        {/* Brand Header */}
+        <div className="mb-8 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-400 shadow-lg shadow-cyan-500/20">
+              <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+            <span className="text-xl font-bold tracking-tight text-white">The Butcher's Shop</span>
+          </div>
+
+          <Link
+            to="/login"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-800 bg-[#0a1128]/60 px-4 py-2 text-xs font-medium text-slate-300 transition hover:border-slate-700 hover:text-white"
+          >
+            <ArrowLeft size={15} />
+            Back to login
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center">
+          {/* Left Hero Graphic Section */}
+          <div className="flex flex-col justify-between rounded-3xl border border-slate-800/80 bg-[#0a1128]/80 p-8 backdrop-blur-xl lg:col-span-5 lg:p-10">
+            <div>
+              <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-cyan-500/30 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 text-cyan-400 shadow-inner">
+                <ShieldCheck size={32} />
+              </div>
+
+              <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+                Verify Your <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Email</span>
+              </h1>
+
+              <p className="mt-3 text-sm leading-relaxed text-slate-400">
+                Enter your registered email address and we'll send you a password reset link.
+              </p>
+            </div>
+
+            <div className="mt-10 rounded-2xl border border-blue-900/40 bg-[#060b19]/60 p-5">
+              <span className="text-xs font-semibold uppercase tracking-wider text-cyan-400">Security Check</span>
+              <p className="mt-1 text-xs text-slate-400">We will verify that your email exists in our system.</p>
+            </div>
+          </div>
+
+          {/* Right Form Container */}
+          <div className="rounded-3xl border border-slate-800/80 bg-[#0a1128]/90 p-6 shadow-2xl shadow-black/50 backdrop-blur-xl sm:p-8 lg:col-span-7">
+            <div className="mb-6 border-b border-slate-800/60 pb-5">
+              <h2 className="text-xl font-bold text-white">Verify Email</h2>
+              <p className="mt-1 text-xs text-slate-400">We'll send a verification link to your email</p>
+            </div>
+
+            <form onSubmit={handleVerify} className="space-y-5">
+              <div>
+                <label htmlFor="verify-email" className="mb-1.5 block text-xs font-medium text-slate-300">
+                  Registered email <span className="text-cyan-400">*</span>
+                </label>
+
+                <div className={inputContainerStyle}>
+                  <Mail size={17} className="shrink-0 text-slate-500" />
+                  <input
+                    id="verify-email"
+                    type="email"
+                    placeholder="Enter your registered email"
+                    autoComplete="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full border-none bg-transparent py-3.5 text-sm text-white outline-none placeholder:text-slate-600 focus:ring-0"
+                  />
+                </div>
+              </div>
+
+              {message && (
+                <div role="alert" className="rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-xs font-medium text-rose-400">
+                  {message}
+                </div>
+              )}
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 py-3.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/25 transition duration-200 hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {loading ? "Verifying..." : "Send Verification Link →"}
+                </button>
+              </div>
+
+              <div className="mt-4 text-center">
+                <Link to="/login" className="text-xs text-slate-400 transition hover:text-cyan-400">
+                  ← Back to Login
+                </Link>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
