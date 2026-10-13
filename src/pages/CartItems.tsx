@@ -90,7 +90,7 @@ export const CategoryProductsPage: React.FC = () => {
         </div>
         <button
           onClick={() => navigate("/createproduct")}
-          className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/20 transition duration-200 hover:brightness-110"
+          className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-linear-to-r from-blue-600 to-cyan-400 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/20 transition duration-200 hover:brightness-110"
         >
           + Add Product
         </button>
@@ -143,7 +143,7 @@ export const CategoryProductsPage: React.FC = () => {
               <div>
                 <button
                   onClick={() => void handleAddToCart(product)}
-                  className="mt-4 w-full rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 py-2.5 text-xs font-bold text-white shadow transition hover:brightness-110"
+                  className="mt-4 w-full rounded-xl bg-linear-to-r from-blue-600 to-cyan-400 py-2.5 text-xs font-bold text-white shadow transition hover:brightness-110"
                 >
                   Add to Cart
                 </button>

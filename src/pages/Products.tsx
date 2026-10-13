@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllProducts, deleteProduct } from "../services/productservices";
 import { getCartByUserId, createCart } from "../services/cartservices";
@@ -130,7 +130,7 @@ export default function Products() {
         </div>
         <button
           onClick={() => navigate("/createproduct")}
-          className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/20 transition duration-200 hover:brightness-110"
+          className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-linear-to-tr from-blue-600 to-cyan-400 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/20 transition duration-200 hover:brightness-110"
         >
           + Add Product
         </button>
@@ -186,7 +186,7 @@ export default function Products() {
                     className={`mt-4 w-full rounded-xl py-2.5 text-xs font-bold shadow transition ${
                       isInCart
                         ? "border border-emerald-500/40 bg-emerald-950/20 text-emerald-400 hover:bg-emerald-500/10"
-                        : "bg-gradient-to-r from-blue-600 to-cyan-400 text-white hover:brightness-110"
+                        : "bg-linear-to-tr from-blue-600 to-cyan-400 text-white hover:brightness-110"
                     } disabled:opacity-50`}
                   >
                     {addingId === product.id

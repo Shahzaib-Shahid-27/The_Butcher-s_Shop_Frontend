@@ -1,11 +1,7 @@
 
 import api from "../api/api";
 
-export const createCartItem = async (data: {
-  cartId: string;
-  productId: string;
-  quantity: number;
-}) => {
+export const createCartItem = async (data: {cartId: string;productId: string;quantity: number;}) => {
   const result = await api.post("/cart-items/", data);
   return result.data.data;
 };
@@ -15,10 +11,7 @@ export const getCartItemsByCartId = async (cartId: string) => {
   return result.data.data;
 };
 
-export const updateCartItem = async (
-  id: string,
-  data: { quantity: number }
-) => {
+export const updateCartItem = async (id: string,data: { quantity: number }) => {
   const result = await api.patch(`/cart-items/${id}`, data);
   return result.data;
 };

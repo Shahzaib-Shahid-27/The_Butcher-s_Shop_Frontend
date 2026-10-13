@@ -53,7 +53,7 @@ export default function Home() {
 
           <h1 className="text-5xl font-black leading-tight tracking-tight text-white sm:text-6xl lg:text-7xl">
             Find what you{" "}
-            <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-violet-400 bg-clip-text text-transparent">
+            <span className="bg-linear-to-tr from-blue-400 via-cyan-300 to-violet-400 bg-clip-text text-transparent">
               love to shop.
             </span>
           </h1>
@@ -65,7 +65,7 @@ export default function Home() {
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
               to="/product"
-              className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/25 transition duration-200 hover:brightness-110"
+              className="group inline-flex items-center gap-2 rounded-xl bg-linear-to-tr from-blue-600 to-cyan-400 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/25 transition duration-200 hover:brightness-110"
             >
               Explore Products
               <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
@@ -118,7 +118,7 @@ export default function Home() {
                 <motion.div
                   animate={{ y: [0, -6, 0] }}
                   transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-400 text-3xl shadow-lg shadow-cyan-500/20"
+                  className="flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-tr from-blue-600 to-cyan-400 text-3xl shadow-lg shadow-cyan-500/20"
                 >
                   🛍️
                 </motion.div>
@@ -133,7 +133,7 @@ export default function Home() {
                     <span className="text-xs font-bold text-white">Products</span>
                   </div>
                   <div className="h-1.5 rounded-full bg-slate-800">
-                    <div className="h-1.5 w-4/5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-400" />
+                    <div className="h-1.5 w-4/5 rounded-full bg-linear-to-tr from-blue-600 to-cyan-400" />
                   </div>
                 </div>
 
@@ -153,7 +153,7 @@ export default function Home() {
 
             <Link
               to="/cart"
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 py-3.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/20 transition hover:brightness-110"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-tr from-blue-600 to-cyan-400 py-3.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/20 transition hover:brightness-110"
             >
               🛒 View Your Cart
             </Link>

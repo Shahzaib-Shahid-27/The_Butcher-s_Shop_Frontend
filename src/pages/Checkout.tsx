@@ -64,7 +64,7 @@ export default function Checkout() {
     <section className="w-full px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl">
         <div className="overflow-hidden rounded-3xl border border-slate-800 bg-[#0B101B] shadow-2xl shadow-cyan-950/20">
-          <div className="border-b border-slate-800 bg-gradient-to-r from-blue-700/20 via-cyan-500/10 to-transparent px-6 py-7 sm:px-8">
+          <div className="border-b border-slate-800 bg-linear-to-r from-blue-700/20 via-cyan-500/10 to-transparent px-6 py-7 sm:px-8">
             <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400">
               The Butcher&apos;s Shop
             </p>
@@ -244,7 +244,7 @@ export default function Checkout() {
             <button
               type="submit"
               disabled={isSending}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 px-5 py-3.5 font-semibold text-white shadow-lg shadow-cyan-950/30 transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-[#0B101B] disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-blue-600 to-cyan-500 px-5 py-3.5 font-semibold text-white shadow-lg shadow-cyan-950/30 transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-[#0B101B] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSending ? "Sending..." : "Send Message"}
               {!isSending && <span aria-hidden="true">→</span>}

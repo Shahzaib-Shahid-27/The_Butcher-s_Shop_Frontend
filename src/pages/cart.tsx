@@ -305,7 +305,7 @@ export default function Cart() {
             <button
               type="button"
               onClick={handleCheckout}
-              className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 py-3 text-sm font-bold text-white shadow-lg shadow-cyan-500/20 transition hover:brightness-110"
+              className="w-full rounded-xl bg-linear-to-r from-blue-600 to-cyan-400 py-3 text-sm font-bold text-white shadow-lg shadow-cyan-500/20 transition hover:brightness-110"
             >
               Proceed to Checkout →
             </button>

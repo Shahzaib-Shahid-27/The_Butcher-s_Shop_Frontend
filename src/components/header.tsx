@@ -164,7 +164,7 @@ export default function Header() {
           onClick={handleNavClick}
           className="flex items-center gap-2.5 text-lg font-extrabold tracking-tight text-white"
         >
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-400 shadow-md shadow-cyan-500/20">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-tr from-blue-600 to-cyan-400 shadow-md shadow-cyan-500/20">
             <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
@@ -201,7 +201,7 @@ export default function Header() {
               <Link
                 to="/register"
                 onClick={handleNavClick}
-                className="rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-cyan-500/20 transition hover:brightness-110"
+                className="rounded-xl bg-linear-to-r from-blue-600 to-cyan-400 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-cyan-500/20 transition hover:brightness-110"
               >
                 Register
               </Link>
@@ -245,7 +245,7 @@ export default function Header() {
                 <Link
                   to="/register"
                   onClick={handleNavClick}
-                  className="flex-1 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 py-2.5 text-center text-xs font-bold text-white shadow-lg shadow-cyan-500/20"
+                  className="flex-1 rounded-xl bg-linear-to-r from-blue-600 to-cyan-400 py-2.5 text-center text-xs font-bold text-white shadow-lg shadow-cyan-500/20"
                 >
                   Register
                 </Link>

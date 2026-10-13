@@ -1,17 +1,10 @@
 import { useMemo, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 
-/* ------------------------------------------------------------------ */
-/*  CONFIG                                                             */
-/* ------------------------------------------------------------------ */
-// Orders are emailed to the address registered on this Formspree form
-// (shahzaibshahidr10@gmail.com) — verify in Formspree > Form > Settings.
+
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xjygrylp";
 const SHOP_NAME = "The Butcher's Shop";
 
-/* ------------------------------------------------------------------ */
-/*  TYPES + SAMPLE PRODUCTS (replace with your real products)          */
-/* ------------------------------------------------------------------ */
 type Product = { id: number; name: string; price: number; image?: string; emoji?: string };
 type CartItem = Product & { qty: number };
 type Customer = { name: string; email: string; phone: string; address: string; city: string; notes: string };
@@ -27,9 +20,7 @@ const PRODUCTS: Product[] = [
 const EMPTY: Customer = { name: "", email: "", phone: "", address: "", city: "", notes: "" };
 const money = (n: number) => `$${n.toFixed(2)}`;
 
-/* ------------------------------------------------------------------ */
-/*  APP                                                                */
-/* ------------------------------------------------------------------ */
+
 export default function ShopCheckout({ userName = "Shahzaib" }: { userName?: string }) {
   const [view, setView] = useState<View>("products");
   const [cart, setCart] = useState<CartItem[]>([]);

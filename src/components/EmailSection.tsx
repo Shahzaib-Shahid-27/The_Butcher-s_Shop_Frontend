@@ -18,23 +18,10 @@ interface CustomerForm {
 }
 
 const FORMSPREE_URL = import.meta.env.VITE_FORMSPREE_URL as string;
-
-/* =====================================================================
-   CART SOURCE SETTINGS  (change these to match your app)
-   ---------------------------------------------------------------------
-   1) If your cart is in localStorage, add your key to LOCAL_KEYS.
-   2) If your cart comes from your backend, set CART_API_URL to the same
-      URL that cart.tsx fetches (e.g. "http://localhost:5000/api/cart").
-      The token is read from localStorage key "token" - change TOKEN_KEY
-      if yours is named differently.
-===================================================================== */
 const LOCAL_KEYS = ["cart", "cartItems", "cart-items", "shoppingCart"];
-// e.g. "http://localhost:5000/api/cart"
 const CART_API_URL = " http://localhost:4000/api/v1"  ; 
 const TOKEN_KEY = "token";
-const THANK_YOU_ROUTE = "/thankyou"; // route of your ThankYou.tsx page
-
-/* Converts whatever shape your cart items have into one standard shape */
+const THANK_YOU_ROUTE = "/thankyou"; 
 const normalizeItems = (raw: any): CartItem[] => {
   const list: any[] = Array.isArray(raw)
     ? raw
@@ -107,7 +94,6 @@ const Checkout: React.FC = () => {
   const clearCart = () => {
     LOCAL_KEYS.forEach((k) => localStorage.removeItem(k));
     setCartItems([]);
-    // If your cart lives on the backend, also call your clear-cart API here.
   };
 
   /* ---- Form ---- */
@@ -137,20 +123,20 @@ const Checkout: React.FC = () => {
       .join("\n\n");
 
     return `
-===== CUSTOMER DETAILS =====
-Name: ${form.fullName}
-Email: ${form.email}
-Phone: ${form.phone}
-Address: ${form.address}
+        ===== CUSTOMER DETAILS =====
+        Name: ${form.fullName}
+        Email: ${form.email}
+        Phone: ${form.phone}
+        Address: ${form.address}
 
-===== ORDER DETAILS =====
-${productLines}
+        ===== ORDER DETAILS =====
+        ${productLines}
 
-TOTAL AMOUNT: $${totalAmount.toFixed(2)}
+        TOTAL AMOUNT: $${totalAmount.toFixed(2)}
 
-===== ADDITIONAL DETAILS =====
-Delivery Instructions: ${form.deliveryInstructions || "None"}
-Message to shop: ${form.message || "None"}
+        ===== ADDITIONAL DETAILS =====
+        Delivery Instructions: ${form.deliveryInstructions || "None"}
+        Message to shop: ${form.message || "None"}
     `.trim();
   };
 
@@ -199,12 +185,12 @@ Message to shop: ${form.message || "None"}
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0a1a4a] via-[#050c26] to-[#030716] px-4 py-10">
+    <div className="min-h-screen bg-linear-to-b from-[#0a1a4a] via-[#050c26] to-[#030716] px-4 py-10">
       <form
         onSubmit={handlePlaceOrder}
         className="mx-auto w-full max-w-3xl overflow-hidden rounded-2xl border border-slate-800 bg-[#060a12]/90 shadow-[0_0_60px_rgba(0,120,255,0.08)]"
       >
-        <div className="border-b border-slate-800 bg-gradient-to-r from-cyan-500/10 to-transparent px-6 py-6">
+        <div className="border-b border-slate-800 bg-linear-to-r from-cyan-500/10 to-transparent px-6 py-6">
           <h2 className="text-3xl font-bold text-white">Checkout</h2>
           <p className="mt-1 text-sm text-slate-400">
             Confirm your order and enter your delivery details.
@@ -303,7 +289,7 @@ Message to shop: ${form.message || "None"}
           <button
             type="submit"
             disabled={loading || cartLoading || cartItems.length === 0}
-            className="w-full rounded-xl bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400 px-6 py-4 text-sm font-semibold text-white shadow-[0_8px_30px_rgba(0,160,255,0.25)] transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-cyan-300/50 disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full rounded-xl bg-linear-to-r from-blue-600 via-blue-500 to-cyan-400 px-6 py-4 text-sm font-semibold text-white shadow-[0_8px_30px_rgba(0,160,255,0.25)] transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-cyan-300/50 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading ? "Placing order..." : "Place Order →"}
           </button>

@@ -38,7 +38,7 @@ export default function AddToCartButton({ userId, productId }: AddToCartButtonPr
       type="button"
       onClick={() => void handleAddToCart()}
       disabled={loading}
-      className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 py-3 text-xs font-bold text-white shadow-lg shadow-cyan-500/20 transition hover:brightness-110 disabled:opacity-50"
+      className="w-full rounded-xl bg-linear-to-r from-blue-600 to-cyan-400 py-3 text-xs font-bold text-white shadow-lg shadow-cyan-500/20 transition hover:brightness-110 disabled:opacity-50"
     >
       {loading ? "Processing..." : "Buy Now / Add to Cart"}
     </button>

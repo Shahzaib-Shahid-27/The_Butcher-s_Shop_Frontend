@@ -52,7 +52,7 @@ export default function VerifyEmail() {
         {/* Brand Header */}
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-400 shadow-lg shadow-cyan-500/20">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-tr from-blue-600 to-cyan-400 shadow-lg shadow-cyan-500/20">
               <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
@@ -73,12 +73,12 @@ export default function VerifyEmail() {
           {/* Left Hero Graphic Section */}
           <div className="flex flex-col justify-between rounded-3xl border border-slate-800/80 bg-[#0a1128]/80 p-8 backdrop-blur-xl lg:col-span-5 lg:p-10">
             <div>
-              <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-cyan-500/30 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 text-cyan-400 shadow-inner">
+              <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-cyan-500/30 bg-linear-to-tr from-blue-500/20 to-cyan-500/20 text-cyan-400 shadow-inner">
                 <ShieldCheck size={32} />
               </div>
 
               <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-                Verify Your <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Email</span>
+                Verify Your <span className="bg-linear-to-tr from-blue-400 to-cyan-400 bg-clip-text text-transparent">Email</span>
               </h1>
 
               <p className="mt-3 text-sm leading-relaxed text-slate-400">
@@ -130,7 +130,7 @@ export default function VerifyEmail() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 py-3.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/25 transition duration-200 hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-linear-to-tr from-blue-600 to-cyan-400 py-3.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/25 transition duration-200 hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {loading ? "Verifying..." : "Send Verification Link →"}
                 </button>
