@@ -1,9 +1,10 @@
 import { Suspense, lazy } from "react";
+
 // Import animation components from Motion
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, } from "motion/react";
 
 // Import routing components from React Router
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation,Navigate } from "react-router-dom";
 
 // Import common layout components directly (keep initial layout fast)
 import Header from "./components/header";
@@ -44,7 +45,7 @@ const VerfyEmail = lazy(() => import("./pages/verfiemail"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 
-
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const location = useLocation();
@@ -70,7 +71,6 @@ function App() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
           >
-            {/* Wrap lazy routes inside Suspense */}
             <Suspense
               fallback={
                 <div className="flex min-h-[50vh] items-center justify-center text-gray-400">
@@ -78,44 +78,146 @@ function App() {
                 </div>
               }
             >
-
               <Routes location={location}>
-                {/* Home routes */}
-                <Route path="/" element={<Home />} />
-                <Route path="/home" element={<Home />} />
+                {/* Send the first-time visitor to login */}
+                <Route
+                  path="/"
+                  element={
+                    localStorage.getItem("accessToken") ? (
+                      <Navigate to="/home" replace />
+                    ) : (
+                      <Navigate to="/login" replace />
+                    )
+                  }
+                />
 
-                {/* Authentication routes */}
+                {/* Public authentication pages */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/forgetpass" element={<Forgetpass />} />
                 <Route path="/verfyemail" element={<VerfyEmail />} />
 
-                {/* Product management routes */}
-                <Route path="/product" element={<Products />} />
-                <Route path="/createproduct" element={<CreateProduct />} />
-                <Route path="/editproduct/:id" element={<EditProduct />} />
-                
-
-                {/* Category management routes */}
-                <Route path="/categories" element={<Categories />} />
-                <Route path="/createcategory" element={<CreateCategory />} />
-                <Route path="/editcategory/:id" element={<EditCategory />} />
+                {/* Protected website pages */}
                 <Route
-                  path="/categories/:categoryId/products"
-                  element={<CategoryProductsPage />}
+                  path="/home"
+                  element={
+                    <ProtectedRoute>
+                      <Home />
+                    </ProtectedRoute>
+                  }
                 />
 
-                {/* Shopping cart routes */}
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/cartitems" element={<CartItems />} />
-                <Route path="/checkout" element={<Checkout />} />
+                <Route
+                  path="/product"
+                  element={
+                    <ProtectedRoute>
+                      <Products />
+                    </ProtectedRoute>
+                  }
+                />
 
+                <Route
+                  path="/createproduct"
+                  element={
+                    <ProtectedRoute>
+                      <CreateProduct />
+                    </ProtectedRoute>
+                  }
+                />
 
-                {/* Legal routes */}
-                <Route path="/terms" element={<TermsOfService />} />
-                <Route path="/privacy" element={<PrivacyPolicy />} />
+                <Route
+                  path="/editproduct/:id"
+                  element={
+                    <ProtectedRoute>
+                      <EditProduct />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/categories"
+                  element={
+                    <ProtectedRoute>
+                      <Categories />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/createcategory"
+                  element={
+                    <ProtectedRoute>
+                      <CreateCategory />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/editcategory/:id"
+                  element={
+                    <ProtectedRoute>
+                      <EditCategory />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/categories/:categoryId/products"
+                  element={
+                    <ProtectedRoute>
+                      <CategoryProductsPage />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/cart"
+                  element={
+                    <ProtectedRoute>
+                      <Cart />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/cartitems"
+                  element={
+                    <ProtectedRoute>
+                      <CartItems />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/checkout"
+                  element={
+                    <ProtectedRoute>
+                      <Checkout />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/terms"
+                  element={
+                    <ProtectedRoute>
+                      <TermsOfService />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/privacy"
+                  element={
+                    <ProtectedRoute>
+                      <PrivacyPolicy />
+                    </ProtectedRoute>
+                  }
+                />
+
+                {/* Unknown URLs */}
+                <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
-
             </Suspense>
           </motion.div>
         </AnimatePresence>
