@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import api from "../api/api";
+import api from "../../api/api";
 
 interface LoggedInUser {
   id: string;

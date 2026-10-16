@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getAllProducts, deleteProduct } from "../services/productservices";
-import api from "../api/api";
+import { getAllProducts, deleteProduct } from "../../services/productservices";
+import api from "../../api/api";
 
 interface Product {
   id: string;

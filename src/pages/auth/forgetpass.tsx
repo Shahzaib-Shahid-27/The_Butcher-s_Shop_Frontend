@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Lock, Eye, EyeOff, ArrowLeft, ShieldCheck, Mail } from "lucide-react";
-import { resetPassword } from "../services/authService";
+import { resetPassword } from "../../services/authService";
 
 export default function ForgotPassword() {
   const location = useLocation();

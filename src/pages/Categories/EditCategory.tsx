@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Layers } from "lucide-react";
-import {
-  getCategoryById,
-  updateCategory,
-} from "../services/categorieservices";
-import ImageSelector from "../components/ImageSelector";
-
-import type { UpdateCategoryType } from "../types/category.ts";
+import {getCategoryById,updateCategory,} from "../../services/categorieservices";
+import ImageSelector from "../../components/ImageSelector";
+import type { UpdateCategoryType } from "../../types/category.ts";
 
 export default function EditCategory() {
   const { id } = useParams<{ id: string }>();

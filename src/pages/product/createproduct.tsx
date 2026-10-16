@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { createproduct } from "../services/productservices";
-import { getAllCategories, createCategory } from "../services/categorieservices";
-import ImageSelector from "../components/ImageSelector";
+import { createproduct } from "../../services/productservices";
+import { getAllCategories, createCategory } from "../../services/categorieservices";
+import ImageSelector from "../../components/ImageSelector";
 
-import type { CreateProductType } from "../types/product";
-import type { CategoryResponse } from "../types/category";
+import type { CreateProductType } from "../../types/product";
+import type { CategoryResponse } from "../../types/category";
 
 export default function CreateProduct() {
   const location = useLocation();

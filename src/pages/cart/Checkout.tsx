@@ -1,5 +1,4 @@
 import { useState, type FormEvent } from "react";
-
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xjygrylp";
 
 export default function Checkout() {

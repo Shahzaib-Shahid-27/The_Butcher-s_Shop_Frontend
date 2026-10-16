@@ -1,15 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
-import {
-  getProductById,
-  updateProduct,
-} from "../services/productservices";
-import { getAllCategories, createCategory } from "../services/categorieservices";
-import ImageSelector from "../components/ImageSelector";
-
-import type { UpdateProductType } from "../types/product";
-import type { CategoryResponse } from "../types/category";
+import {getProductById,updateProduct,} from "../../services/productservices";
+import { getAllCategories, createCategory } from "../../services/categorieservices";
+import ImageSelector from "../../components/ImageSelector";
+import type { UpdateProductType } from "../../types/product";
+import type { CategoryResponse } from "../../types/category";
 
 export default function EditProduct() {
   const { id } = useParams<{ id: string }>();

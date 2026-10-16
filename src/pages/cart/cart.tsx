@@ -1,15 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { getCartByUserId, createCart } from "../services/cartservices";
-
-import {
-  getCartItemsByCartId,
-  deleteCartItem,
-  updateCartItem,
-} from "../services/cartitemservice";
-
-import { getAllProducts } from "../services/productservices";
+import { getCartByUserId, createCart } from "../../services/cartservices";
+import {getCartItemsByCartId,deleteCartItem,updateCartItem,} from "../../services/cartitemservice";
+import { getAllProducts } from "../../services/productservices";
 
 interface CartItem {
   id: string;

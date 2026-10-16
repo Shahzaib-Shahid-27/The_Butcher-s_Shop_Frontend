@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api/api"; // Or your cart service function
+import api from "../../api/api"; // Or your cart service function
 
 interface AddToCartButtonProps {
   userId: string;
