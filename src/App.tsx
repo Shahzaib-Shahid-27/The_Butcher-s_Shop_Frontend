@@ -46,16 +46,12 @@ const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 
 import ProtectedRoute from "./components/ProtectedRoute";
+import GoogleSuccess from "./pages/GoogleSuccess";
 
 function App() {
   const location = useLocation();
 
-  const hideLayout = [
-    "/login",
-    "/register",
-    "/forgetpass",
-    "/verfyemail",
-  ].includes(location.pathname);
+  const hideLayout = ["/login", "/register", "/forgetpass", "/verfyemail", "/google-success"].includes(location.pathname);
 
   return (
     <div className="flex min-h-screen flex-col text-white">
@@ -187,7 +183,7 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-
+<Route path="/google-success" element={<GoogleSuccess />} />
                 <Route
                   path="/checkout"
                   element={

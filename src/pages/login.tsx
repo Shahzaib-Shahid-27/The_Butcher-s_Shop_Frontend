@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock, ShoppingBag } from "lucide-react";
 import { loginUser, getProfile } from "../services/authService";
+import GoogleButton from "../components/GoogleButton";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -169,6 +170,7 @@ export default function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     className="w-full border-none bg-transparent py-3.5 text-sm text-white outline-none placeholder:text-slate-600 focus:ring-0"
                   />
+                  
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
@@ -185,6 +187,13 @@ export default function LoginPage() {
                   {message}
                 </div>
               )}
+                
+                <div className="my-5 flex items-center gap-3">
+                  <div className="h-px flex-1 bg-slate-800" />
+                  <span className="text-xs text-slate-500">or</span>
+                  <div className="h-px flex-1 bg-slate-800" />
+                </div>
+                <GoogleButton label="Sign in with Google" /> 
 
               <div className="pt-2">
                 <button
@@ -206,6 +215,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      
     </div>
   );
 }

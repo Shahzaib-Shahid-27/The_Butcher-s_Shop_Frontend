@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User, Mail, Lock, Eye, EyeOff, ShoppingBag } from "lucide-react";
 import { registerUser } from "../services/authService";
+import GoogleButton from "../components/GoogleButton";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -214,6 +215,13 @@ export default function RegisterPage() {
                   {message}
                 </div>
               )}
+
+              <div className="my-5 flex items-center gap-3">
+                  <div className="h-px flex-1 bg-slate-800" />
+                  <span className="text-xs text-slate-500">or</span>
+                  <div className="h-px flex-1 bg-slate-800" />
+                </div>
+                <GoogleButton label="Sign in with Google" /> 
 
               <div className="pt-2">
                 <button
