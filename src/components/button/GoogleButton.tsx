@@ -4,20 +4,22 @@ interface GoogleButtonProps {
   label?: string;
 }
 
-const GoogleButton: React.FC<GoogleButtonProps> = ({ label = "Continue with Google",}) => {
-
-const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000/api/v1";
+const GoogleButton: React.FC<GoogleButtonProps> = ({
+  label = "Continue with Google",
+}) => {
+  const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000/api/v1";
 
   return (
     <a
       href={`${API}/auth/google`}
-      className="flex w-full items-center justify-center gap-3 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50"
+      className="flex w-full items-center justify-center gap-3 rounded-xl border border-neutral-200 bg-white px-4 py-3 text-xs font-bold uppercase tracking-wider text-neutral-800 shadow-sm transition hover:bg-neutral-50 hover:border-neutral-900 active:scale-[0.99]"
     >
       <svg
-        width="20"
-        height="20"
+        width="18"
+        height="18"
         viewBox="0 0 24 24"
         aria-hidden="true"
+        className="shrink-0"
       >
         <path
           fill="#4285F4"
@@ -36,7 +38,6 @@ const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000/api/v1";
           d="M12 6.13c1.43 0 2.72.49 3.73 1.46l2.8-2.8C16.83 3.25 14.63 2.25 12 2.25a9.75 9.75 0 0 0-8.7 5.38l3.24 2.53C7.31 7.85 9.46 6.13 12 6.13z"
         />
       </svg>
-
       {label}
     </a>
   );

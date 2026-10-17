@@ -1,22 +1,23 @@
-
 @import "tailwindcss";
 
 :root {
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-  color: #e8eeff;
-  background: #050d2b;
+  color: #171717; /* neutral-900 */
+  background: #ffffff;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 
-  --navy: #050d2b;
-  --panel: #0b1740;
-  --blue: #1769ff;
-  --cyan: #22d3ee;
-  --muted: #9aa9cf;
+  --navy: #171717;
+  --panel: #fafafa;
+  --blue: #171717;
+  --cyan: #525252;
+  --muted: #737373;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -29,10 +30,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-  background:
-    radial-gradient(ellipse at 15% 0%, #10276a 0%, transparent 38%),
-    radial-gradient(ellipse at 90% 45%, #101d53 0%, transparent 35%),
-    var(--navy);
+  background: #ffffff;
+  color: #171717;
 }
 
 button,
@@ -53,19 +52,15 @@ a {
 
 ::selection {
   color: white;
-  background: #1769ff;
+  background: #171717;
 }
 
 .glass-panel {
-  border: 1px solid rgba(139, 166, 255, 0.2);
-  background: linear-gradient(
-    145deg,
-    rgba(28, 47, 103, 0.72),
-    rgba(7, 18, 52, 0.88)
-  );
+  border: 1px solid #e5e5e5;
+  background: #ffffff;
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    0 10px 30px rgba(0, 0, 0, 0.04),
+    0 1px 3px rgba(0, 0, 0, 0.02);
   backdrop-filter: blur(18px);
 }
 
@@ -74,46 +69,48 @@ a {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: 1px solid rgba(123, 176, 255, 0.3);
+  border: 1px solid #171717;
   border-radius: 12px;
-  background: linear-gradient(135deg, #287cff, #1249df);
+  background: #171717;
   padding: 11px 18px;
   color: white;
   font-weight: 600;
-  box-shadow: 0 8px 25px rgba(23, 105, 255, 0.2);
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
   cursor: pointer;
 }
 
 .blue-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(23, 105, 255, 0.35);
+  transform: translateY(-1px);
+  background: #262626;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .blue-button:disabled {
   cursor: not-allowed;
-  opacity: 0.55;
+  opacity: 0.5;
   transform: none;
 }
 
 .field {
   width: 100%;
-  border: 1px solid rgba(139, 166, 255, 0.22);
+  border: 1px solid #e5e5e5;
   border-radius: 12px;
-  background: rgba(4, 13, 40, 0.75);
+  background: #fafafa;
   padding: 12px 14px;
-  color: #f4f7ff;
+  color: #171717;
   outline: none;
-  transition: border-color 180ms ease, box-shadow 180ms ease;
+  transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
 }
 
 .field::placeholder {
-  color: #7788b4;
+  color: #a3a3a3;
 }
 
 .field:focus {
-  border-color: #3c83ff;
-  box-shadow: 0 0 0 3px rgba(23, 105, 255, 0.15);
+  border-color: #171717;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(23, 23, 23, 0.08);
 }
 
 .page-container {
@@ -123,7 +120,7 @@ a {
 }
 
 .page-title {
-  color: #f4f7ff;
+  color: #171717;
   font-size: clamp(1.8rem, 4vw, 2.6rem);
   font-weight: 800;
   letter-spacing: -0.04em;
@@ -135,20 +132,17 @@ a {
 
 .product-card {
   overflow: hidden;
-  border: 1px solid rgba(139, 166, 255, 0.17);
+  border: 1px solid #e5e5e5;
   border-radius: 20px;
-  background: linear-gradient(
-    150deg,
-    rgba(20, 37, 86, 0.9),
-    rgba(7, 16, 45, 0.95)
-  );
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.16);
-  transition: transform 220ms ease, border-color 220ms ease;
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(66, 143, 255, 0.55);
+  transform: translateY(-4px);
+  border-color: #171717;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -161,21 +155,20 @@ a {
   }
 }
 
-/* Fix browser autofill light background */
+/* Fix browser autofill background */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px #060b19 inset !important;
-  -webkit-text-fill-color: #ffffff !important;
+  -webkit-box-shadow: 0 0 0 1000px #fafafa inset !important;
+  -webkit-text-fill-color: #171717 !important;
   transition: background-color 5000s ease-in-out 0s;
 }
-
 
 /* Custom Scrollbar Utility */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #334155 transparent;
+  scrollbar-color: #d4d4d4 transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -187,10 +180,10 @@ input:-webkit-autofill:active {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #d4d4d4;
   border-radius: 9999px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #a3a3a3;
 }

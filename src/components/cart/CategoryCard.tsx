@@ -1,5 +1,6 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Edit3, Trash2, Folder } from "lucide-react";
 
 interface CategoryCardProps {
   category: {
@@ -13,7 +14,11 @@ interface CategoryCardProps {
   onDelete: (id: string) => void;
 }
 
-export const CategoryCard: React.FC<CategoryCardProps> = ({ category, onEdit, onDelete }) => {
+export const CategoryCard: React.FC<CategoryCardProps> = ({
+  category,
+  onEdit,
+  onDelete,
+}) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
@@ -21,52 +26,67 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({ category, onEdit, on
   };
 
   return (
-    <div 
-      onClick={handleCardClick} 
-      className="bg-[#0b0f19] border border-gray-800 rounded-2xl p-4 cursor-pointer hover:border-gray-700 transition duration-200"
+    <div
+      onClick={handleCardClick}
+      className="group relative bg-white border border-neutral-200 rounded-2xl p-5 cursor-pointer hover:border-neutral-900 transition duration-200 flex flex-col justify-between shadow-sm"
     >
-      {/* Image Container */}
-      <div className="relative w-full h-48 bg-[#070a10] rounded-xl flex items-center justify-center overflow-hidden mb-4">
-        <span className="absolute top-3 right-3 bg-emerald-950/80 text-emerald-400 text-xs font-semibold px-2.5 py-1 rounded-full border border-emerald-500/30">
-          {category.status || 'ACTIVE'}
-        </span>
-        {category.image ? (
-          <img src={category.image} alt={category.name} className="w-full h-full object-cover" />
-        ) : (
-          <svg className="w-12 h-12 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-        )}
+      <div>
+        {/* Image Container */}
+        <div className="relative w-full h-48 bg-neutral-100 border border-neutral-200 rounded-xl flex items-center justify-center overflow-hidden mb-4">
+          <span className="absolute top-3 right-3 bg-neutral-900/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider z-10">
+            {category.status || "ACTIVE"}
+          </span>
+          {category.image ? (
+            <img
+              src={category.image}
+              alt={category.name}
+              className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+            />
+          ) : (
+            <div className="flex flex-col items-center gap-2 text-neutral-400">
+              <Folder size={32} />
+              <span className="text-[10px] font-medium uppercase tracking-wider">
+                No Image
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Category Info */}
+        <h3 className="text-neutral-900 text-base font-bold mb-1">
+          {category.name}
+        </h3>
+        <p className="text-neutral-500 text-xs line-clamp-2 leading-relaxed">
+          {category.description || "No description provided for this category."}
+        </p>
       </div>
 
-      {/* Category Info */}
-      <h3 className="text-white text-xl font-bold mb-1">{category.name}</h3>
-      <p className="text-gray-400 text-sm mb-4">
-        {category.description || "No description provided for this category."}
-      </p>
+      <div>
+        <hr className="border-neutral-100 my-4" />
 
-      <hr className="border-gray-800 my-4" />
-
-      {/* Action Buttons */}
-      <div className="flex gap-3">
-        <button
-          onClick={(e) => {
-            e.stopPropagation(); // Prevents navigating to the category page when clicking Edit
-            onEdit(category.id);
-          }}
-          className="flex-1 py-2 px-4 border border-cyan-500/40 text-cyan-400 rounded-xl hover:bg-cyan-500/10 transition"
-        >
-          Edit
-        </button>
-        <button
-          onClick={(e) => {
-            e.stopPropagation(); // Prevents navigating to the category page when clicking Delete
-            onDelete(category.id);
-          }}
-          className="flex-1 py-2 px-4 border border-pink-500/40 text-pink-500 rounded-xl hover:bg-pink-500/10 transition"
-        >
-          Delete
-        </button>
+        {/* Admin Action Buttons */}
+        {localStorage.getItem("role") === "ADMIN" && (
+          <div className="flex gap-2">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(category.id);
+              }}
+              className="flex-1 py-2 px-3 border border-neutral-200 text-neutral-700 font-semibold rounded-xl hover:border-neutral-900 hover:text-neutral-900 transition text-xs inline-flex items-center justify-center gap-1.5 bg-white shadow-sm"
+            >
+              <Edit3 size={13} /> Edit
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(category.id);
+              }}
+              className="flex-1 py-2 px-3 border border-red-200 text-red-600 font-semibold rounded-xl hover:bg-red-50 transition text-xs inline-flex items-center justify-center gap-1.5 bg-white shadow-sm"
+            >
+              <Trash2 size={13} /> Delete
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

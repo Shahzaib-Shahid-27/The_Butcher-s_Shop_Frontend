@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
+import { Plus, Edit3, Trash2, Folder, ImageOff } from "lucide-react";
 
 interface Category {
   id: string;
@@ -32,14 +33,25 @@ const Categories: React.FC = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (window.confirm("Are you sure you want to delete this category?")) {
-      try {
-        await api.delete(`/categories/${id}/`);
-        setCategories((prev) => prev.filter((cat) => cat.id !== id));
-      } catch (error) {
-        console.error("Failed to delete category:", error);
+  const handleDelete = async (categoryId: string) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+
+      if (!token) {
+        alert("Please log in again.");
+        return;
       }
+
+      await api.delete(`/categories/${categoryId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      await fetchCategories();
+    } catch (error) {
+      console.error("Delete category failed:", error);
+      alert("Unable to delete category. Please check your login and permissions.");
     }
   };
 
@@ -49,28 +61,32 @@ const Categories: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[60vh] text-gray-400">
+      <div className="flex justify-center items-center min-h-[60vh] text-xs font-semibold text-neutral-400">
         Loading categories...
       </div>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10">
+    <div className="max-w-7xl mx-auto px-6 py-12 font-sans text-neutral-900 bg-white min-h-screen">
       {/* Header Bar */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-wrap justify-between items-center mb-8 border-b border-neutral-100 pb-6 gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white">Categories</h1>
-          <p className="text-gray-400 text-sm mt-1">
-            Manage your product categories or click to view items within a category.
+          <span className="text-xs font-bold tracking-widest text-neutral-400 uppercase">Management Portal</span>
+          <h1 className="text-3xl font-black tracking-tight text-neutral-900 mt-1">Categories</h1>
+          <p className="text-neutral-500 text-xs mt-1">
+            Manage product categories or click any category to view included items.
           </p>
         </div>
-        <button
-          onClick={() => navigate("/createcategory")}
-          className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-linear-to-r from-blue-600 to-cyan-400 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/20 transition duration-200 hover:brightness-110"
-        >
-          + Add Category
-        </button>
+
+        {localStorage.getItem("role") === "ADMIN" && (
+          <button
+            onClick={() => navigate("/createcategory")}
+            className="inline-flex items-center gap-2 rounded-xl bg-neutral-900 px-5 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md hover:bg-neutral-800 transition"
+          >
+            <Plus size={16} /> Add Category
+          </button>
+        )}
       </div>
 
       {/* Grid List */}
@@ -82,12 +98,12 @@ const Categories: React.FC = () => {
             <div
               key={category.id}
               onClick={() => navigate(`/categories/${category.id}/products`)}
-              className="group relative bg-[#0b0f19] border border-gray-800 rounded-2xl p-4 cursor-pointer hover:border-gray-700 transition duration-200 flex flex-col justify-between"
+              className="group relative bg-white border border-neutral-200 rounded-2xl p-5 cursor-pointer hover:border-neutral-900 transition duration-200 flex flex-col justify-between shadow-sm"
             >
               <div>
                 {/* Category Image Box */}
-                <div className="relative w-full h-48 bg-[#070a10] border border-gray-800/60 rounded-xl flex items-center justify-center overflow-hidden mb-4">
-                  <span className="absolute top-3 right-3 bg-emerald-950/80 text-emerald-400 text-xs font-semibold px-2.5 py-1 rounded-full border border-emerald-500/30 z-10">
+                <div className="relative w-full h-48 bg-neutral-100 border border-neutral-200 rounded-xl flex items-center justify-center overflow-hidden mb-4">
+                  <span className="absolute top-3 right-3 bg-neutral-900/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider z-10">
                     {category.status || "ACTIVE"}
                   </span>
 
@@ -99,53 +115,46 @@ const Categories: React.FC = () => {
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                     />
                   ) : (
-                    <svg
-                      className="w-12 h-12 text-gray-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.5"
-                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
+                    <div className="flex flex-col items-center gap-2 text-neutral-400">
+                      <Folder size={32} />
+                      <span className="text-[10px] font-medium uppercase tracking-wider">No Image</span>
+                    </div>
                   )}
                 </div>
 
                 {/* Title & Description */}
-                <h3 className="text-white text-xl font-bold mb-1">{category.name}</h3>
-                <p className="text-gray-400 text-sm line-clamp-2">
+                <h3 className="text-neutral-900 text-base font-bold mb-1">{category.name}</h3>
+                <p className="text-neutral-500 text-xs line-clamp-2 leading-relaxed">
                   {category.description || "No description provided for this category."}
                 </p>
               </div>
 
               <div>
-                <hr className="border-gray-800 my-4" />
+                <hr className="border-neutral-100 my-4" />
 
-                {/* Buttons with stopPropagation */}
-                <div className="flex gap-3">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/editcategory/${category.id}`);
-                    }}
-                    className="flex-1 py-2 px-4 border border-cyan-500/40 text-cyan-400 font-medium rounded-xl hover:bg-cyan-500/10 transition text-sm"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      void handleDelete(category.id);
-                    }}
-                    className="flex-1 py-2 px-4 border border-pink-500/40 text-pink-500 font-medium rounded-xl hover:bg-pink-500/10 transition text-sm"
-                  >
-                    Delete
-                  </button>
-                </div>
+                {/* Admin Action Buttons */}
+                {localStorage.getItem("role") === "ADMIN" && (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/editcategory/${category.id}`);
+                      }}
+                      className="flex-1 py-2 px-3 border border-neutral-200 text-neutral-700 font-semibold rounded-xl hover:border-neutral-900 hover:text-neutral-900 transition text-xs inline-flex items-center justify-center gap-1.5 bg-white shadow-sm"
+                    >
+                      <Edit3 size={13} /> Edit
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        void handleDelete(category.id);
+                      }}
+                      className="flex-1 py-2 px-3 border border-red-200 text-red-600 font-semibold rounded-xl hover:bg-red-50 transition text-xs inline-flex items-center justify-center gap-1.5 bg-white shadow-sm"
+                    >
+                      <Trash2 size={13} /> Delete
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           );

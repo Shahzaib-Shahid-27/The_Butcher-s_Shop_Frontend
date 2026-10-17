@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import api from "../../api/api";
+import { ShoppingBag, ShieldCheck, User, LogOut, LogIn, UserPlus, Menu, X, ChevronDown } from "lucide-react";
 
 interface LoggedInUser {
   id: string;
@@ -88,8 +89,8 @@ export default function Header() {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `rounded-xl px-3.5 py-2 text-xs font-semibold transition ${
       isActive
-        ? "bg-blue-500/15 text-cyan-400 border border-blue-500/30"
-        : "text-slate-300 hover:bg-[#0a1128] hover:text-white"
+        ? "bg-neutral-900 text-white shadow-sm"
+        : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
     }`;
 
   const navLinks = (
@@ -103,33 +104,31 @@ export default function Header() {
         <button
           type="button"
           onClick={() => setCategoryDropdownOpen((prev) => !prev)}
-          className="flex items-center gap-1 rounded-xl px-3.5 py-2 text-xs font-semibold text-slate-300 transition hover:bg-[#0a1128] hover:text-white"
+          className="flex items-center gap-1 rounded-xl px-3.5 py-2 text-xs font-semibold text-neutral-600 transition hover:bg-neutral-100 hover:text-neutral-900"
         >
           Categories
-          <span className={`text-[10px] transition-transform duration-200 ${categoryDropdownOpen ? "rotate-180" : ""}`}>
-            ▼
-          </span>
+          <ChevronDown size={14} className={`transition-transform duration-200 ${categoryDropdownOpen ? "rotate-180" : ""}`} />
         </button>
 
         {categoryDropdownOpen && (
-          <div className="absolute left-0 mt-2 w-56 rounded-2xl border border-slate-800 bg-[#070b19] p-2 shadow-2xl backdrop-blur-xl z-50">
+          <div className="absolute left-0 mt-2 w-56 rounded-2xl border border-neutral-200 bg-white p-2 shadow-xl z-50">
             <NavLink
               to="/categories"
               onClick={handleNavClick}
-              className="block rounded-xl px-3 py-2 text-xs font-bold text-cyan-400 hover:bg-blue-500/10 transition"
+              className="block rounded-xl px-3 py-2 text-xs font-bold text-neutral-900 hover:bg-neutral-50 transition"
             >
               View All Categories →
             </NavLink>
-            <div className="my-1 border-t border-slate-800" />
+            <div className="my-1 border-t border-neutral-100" />
             <div className="max-h-60 overflow-y-auto space-y-1 pr-1 custom-scrollbar">
               {categories.length === 0 ? (
-                <div className="px-3 py-2 text-xs text-slate-500">No categories found</div>
+                <div className="px-3 py-2 text-xs text-neutral-400">No categories found</div>
               ) : (
                 categories.map((cat) => (
                   <button
                     key={cat.id}
                     onClick={() => handleCategorySelect(cat.id)}
-                    className="w-full text-left rounded-xl px-3 py-2 text-xs font-medium text-slate-300 hover:bg-slate-800/60 hover:text-white transition truncate"
+                    className="w-full text-left rounded-xl px-3 py-2 text-xs font-medium text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 transition truncate"
                   >
                     {cat.name}
                   </button>
@@ -148,6 +147,13 @@ export default function Header() {
           Cart
         </NavLink>
       )}
+
+      {/* Admin Panel Nav Link */}
+      {localStorage.getItem("role") === "ADMIN" && (
+        <NavLink to="/admin" className={linkClass} onClick={handleNavClick}>
+          <ShieldCheck size={14} className="inline mr-1" /> Admin Dashboard
+        </NavLink>
+      )}
     </>
   );
 
@@ -155,19 +161,18 @@ export default function Header() {
     <motion.header
       initial={{ opacity: 0, y: -12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="sticky top-0 z-40 border-b border-slate-800/80 bg-[#030712]/90 font-sans shadow-xl backdrop-blur-xl"
+      className="sticky top-0 z-40 border-b border-neutral-200 bg-white/90 font-sans shadow-sm backdrop-blur-xl"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3.5 sm:px-6 lg:px-8">
+        
         {/* Brand Logo */}
         <Link
           to="/home"
           onClick={handleNavClick}
-          className="flex items-center gap-2.5 text-lg font-extrabold tracking-tight text-white"
+          className="flex items-center gap-2.5 text-lg font-black tracking-tight text-neutral-900 uppercase"
         >
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-tr from-blue-600 to-cyan-400 shadow-md shadow-cyan-500/20">
-            <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-neutral-900 text-white shadow-sm">
+            <span className="font-black tracking-tighter text-base">BS</span>
           </div>
           <span>The Butcher's Shop</span>
         </Link>
@@ -179,14 +184,14 @@ export default function Header() {
         <div className="hidden items-center gap-3 md:flex">
           {user ? (
             <>
-              <span className="max-w-36 truncate text-xs font-medium text-slate-300">
-                Hi, {user.name || user.email || "User"}
+              <span className="max-w-36 truncate text-xs font-semibold text-neutral-700 flex items-center gap-1">
+                <User size={13} /> Hi, {user.name || user.email || "User"}
               </span>
               <button
                 onClick={handleLogout}
-                className="rounded-xl border border-rose-900/40 bg-rose-950/20 px-3.5 py-1.5 text-xs font-semibold text-rose-400 transition hover:border-rose-500/50 hover:bg-rose-500/20"
+                className="rounded-xl border border-red-200 bg-white px-3.5 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50 shadow-sm inline-flex items-center gap-1.5"
               >
-                Logout
+                <LogOut size={13} /> Logout
               </button>
             </>
           ) : (
@@ -194,16 +199,16 @@ export default function Header() {
               <Link
                 to="/login"
                 onClick={handleNavClick}
-                className="rounded-xl border border-blue-900/40 bg-[#060b19] px-4 py-2 text-xs font-semibold text-cyan-400 transition hover:border-cyan-400/50 hover:bg-cyan-500/10"
+                className="rounded-xl border border-neutral-200 bg-white px-4 py-2 text-xs font-semibold text-neutral-800 transition hover:border-neutral-900 shadow-sm inline-flex items-center gap-1.5"
               >
-                Login
+                <LogIn size={13} /> Login
               </Link>
               <Link
                 to="/register"
                 onClick={handleNavClick}
-                className="rounded-xl bg-linear-to-r from-blue-600 to-cyan-400 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-cyan-500/20 transition hover:brightness-110"
+                className="rounded-xl bg-neutral-900 px-4 py-2 text-xs font-bold uppercase tracking-wider text-white shadow-md transition hover:bg-neutral-800 inline-flex items-center gap-1.5"
               >
-                Register
+                <UserPlus size={13} /> Register
               </Link>
             </>
           )}
@@ -213,39 +218,39 @@ export default function Header() {
         <button
           type="button"
           onClick={() => setMenuOpen((open) => !open)}
-          className="rounded-xl border border-slate-800 bg-[#0a1128] p-2 text-slate-300 md:hidden hover:text-white"
+          className="rounded-xl border border-neutral-200 bg-white p-2 text-neutral-800 md:hidden hover:border-neutral-900 shadow-sm"
           aria-label="Toggle navigation"
           aria-expanded={menuOpen}
         >
-          <span className="text-base">{menuOpen ? "✕" : "☰"}</span>
+          {menuOpen ? <X size={18} /> : <Menu size={18} />}
         </button>
       </div>
 
       {/* Mobile Drawer Menu */}
       {menuOpen && (
-        <nav className="flex flex-col gap-1.5 border-t border-slate-800/80 bg-[#0a1128] p-4 md:hidden">
+        <nav className="flex flex-col gap-1.5 border-t border-neutral-200 bg-white p-4 md:hidden shadow-lg">
           {navLinks}
-          <div className="mt-2 flex gap-2 border-t border-slate-800/60 pt-3">
+          <div className="mt-2 flex gap-2 border-t border-neutral-100 pt-3">
             {user ? (
               <button
                 onClick={handleLogout}
-                className="w-full rounded-xl border border-rose-900/40 bg-rose-950/20 py-2.5 text-xs font-semibold text-rose-400"
+                className="w-full rounded-xl border border-red-200 bg-red-50 py-2.5 text-xs font-semibold text-red-600 inline-flex items-center justify-center gap-1.5"
               >
-                Logout
+                <LogOut size={13} /> Logout
               </button>
             ) : (
               <>
                 <Link
                   to="/login"
                   onClick={handleNavClick}
-                  className="flex-1 rounded-xl border border-blue-900/40 bg-[#060b19] py-2.5 text-center text-xs font-semibold text-cyan-400"
+                  className="flex-1 rounded-xl border border-neutral-200 bg-white py-2.5 text-center text-xs font-semibold text-neutral-800 shadow-sm"
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
                   onClick={handleNavClick}
-                  className="flex-1 rounded-xl bg-linear-to-r from-blue-600 to-cyan-400 py-2.5 text-center text-xs font-bold text-white shadow-lg shadow-cyan-500/20"
+                  className="flex-1 rounded-xl bg-neutral-900 py-2.5 text-center text-xs font-bold uppercase tracking-wider text-white shadow-md"
                 >
                   Register
                 </Link>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getAllProducts, deleteProduct } from "../../services/productservices";
 import api from "../../api/api";
+import { ArrowLeft, Plus, Edit3, Trash2, ShoppingBag, Package } from "lucide-react";
 
 interface Product {
   id: string;
@@ -20,6 +21,8 @@ export const CategoryProductsPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  const isAdmin = localStorage.getItem("role") === "ADMIN";
 
   useEffect(() => {
     const fetchCategoryProducts = async () => {
@@ -47,14 +50,13 @@ export const CategoryProductsPage: React.FC = () => {
     }
   }, [categoryId]);
 
- const handleAddToCart = async (product: Product) => {
+  const handleAddToCart = async (product: Product) => {
     try {
-      // Try adjusting the payload keys if your backend expects different names (e.g., product_id)
       await api.post("/carts/", {
-        productId: product.id, // or product_id: product.id
+        productId: product.id,
         quantity: 1,
       });
-      setSuccessMessage(`Added "${product.name}" to cart!`);
+      setSuccessMessage(`Added "${product.name}" to bag!`);
       setTimeout(() => setSuccessMessage(null), 3000);
     } catch (error: unknown) {
       const err = error as { response?: { data?: unknown } };
@@ -75,39 +77,43 @@ export const CategoryProductsPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10 font-sans text-slate-100">
+    <div className="max-w-7xl mx-auto px-6 py-12 font-sans text-neutral-900 bg-white min-h-screen">
       <button
         onClick={() => navigate("/categories")}
-        className="mb-6 text-sm text-gray-400 hover:text-white transition flex items-center gap-2"
+        className="mb-6 text-xs font-semibold text-neutral-500 hover:text-neutral-950 transition flex items-center gap-1.5"
       >
-        ← Back to Categories
+        <ArrowLeft size={14} /> Back to Categories
       </button>
 
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-wrap justify-between items-center mb-8 border-b border-neutral-100 pb-6 gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white">Category Products</h1>
-          <p className="text-gray-400 text-sm mt-1">Showing all items under this category.</p>
+          <span className="text-xs font-bold tracking-widest text-neutral-400 uppercase">Catalog View</span>
+          <h1 className="text-3xl font-black tracking-tight text-neutral-900 mt-1">Category Products</h1>
+          <p className="text-neutral-500 text-xs mt-1">Showing all items available under this category.</p>
         </div>
-        <button
-          onClick={() => navigate("/createproduct")}
-          className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-linear-to-r from-blue-600 to-cyan-400 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/20 transition duration-200 hover:brightness-110"
-        >
-          + Add Product
-        </button>
+
+        {localStorage.getItem("role") === "ADMIN" && (
+          <button
+            onClick={() => navigate("/createproduct")}
+            className="inline-flex items-center gap-2 rounded-xl bg-neutral-900 px-5 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md hover:bg-neutral-800 transition"
+          >
+            <Plus size={16} /> Add Product
+          </button>
+        )}
       </div>
 
       {successMessage && (
-        <div className="mb-6 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-xs font-medium text-emerald-400">
+        <div className="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs font-medium text-emerald-700">
           {successMessage}
         </div>
       )}
 
       {loading ? (
-        <div className="flex justify-center items-center min-h-[40vh] text-gray-400">
+        <div className="flex justify-center items-center min-h-[40vh] text-xs font-semibold text-neutral-400">
           Loading products...
         </div>
       ) : products.length === 0 ? (
-        <div className="bg-[#0b0f19] border border-gray-800 rounded-2xl p-12 text-center text-gray-400">
+        <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-12 text-center text-xs text-neutral-500">
           No products found in this category.
         </div>
       ) : (
@@ -115,54 +121,58 @@ export const CategoryProductsPage: React.FC = () => {
           {products.map((product) => (
             <div
               key={product.id}
-              className="bg-[#0b0f19] border border-gray-800 rounded-2xl p-4 flex flex-col justify-between"
+              className="bg-white border border-neutral-200 rounded-2xl p-5 flex flex-col justify-between shadow-sm hover:border-neutral-900 transition"
             >
               <div>
-                <div className="w-full h-40 bg-[#070a10] border border-gray-800/60 rounded-xl flex items-center justify-center overflow-hidden mb-4">
+                <div className="w-full h-48 bg-neutral-100 border border-neutral-200 rounded-xl flex items-center justify-center overflow-hidden mb-4">
                   {product.image ? (
                     <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                   ) : (
-                    <svg className="w-10 h-10 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                    </svg>
+                    <Package className="w-10 h-10 text-neutral-400" />
                   )}
                 </div>
 
                 <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-lg font-bold text-white">{product.name}</h3>
+                  <h3 className="text-sm font-bold text-neutral-900">{product.name}</h3>
                   {product.price !== undefined && (
-                    <span className="text-emerald-400 font-semibold text-sm">${product.price}</span>
+                    <span className="text-neutral-900 font-bold text-sm">
+                      ${Number(product.price).toFixed(2)}
+                    </span>
                   )}
                 </div>
 
-                <p className="text-gray-400 text-sm line-clamp-2">
+                <p className="text-neutral-500 text-xs line-clamp-2 leading-relaxed">
                   {product.description || "No description provided."}
                 </p>
               </div>
 
-              <div>
+              <div className="mt-6">
                 <button
                   onClick={() => void handleAddToCart(product)}
-                  className="mt-4 w-full rounded-xl bg-linear-to-r from-blue-600 to-cyan-400 py-2.5 text-xs font-bold text-white shadow transition hover:brightness-110"
+                  className="w-full rounded-xl bg-neutral-900 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md hover:bg-neutral-800 transition inline-flex items-center justify-center gap-2"
                 >
-                  Add to Cart
+                  <ShoppingBag size={14} /> Add to Bag
                 </button>
 
-                <hr className="border-gray-800 my-3" />
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => navigate(`/editproduct/${product.id}`)}
-                    className="flex-1 py-1.5 px-3 border border-cyan-500/40 text-cyan-400 font-medium rounded-xl hover:bg-cyan-500/10 transition text-xs"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => void handleDelete(product.id)}
-                    className="flex-1 py-1.5 px-3 border border-pink-500/40 text-pink-500 font-medium rounded-xl hover:bg-pink-500/10 transition text-xs"
-                  >
-                    Delete
-                  </button>
-                </div>
+                {localStorage.getItem("role") === "ADMIN" && (
+                  <>
+                    <div className="border-t border-neutral-100 my-3" />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => navigate(`/editproduct/${product.id}`)}
+                        className="flex-1 py-2 px-3 border border-neutral-200 text-neutral-700 font-semibold rounded-xl hover:border-neutral-900 hover:text-neutral-900 transition text-xs inline-flex items-center justify-center gap-1.5 bg-white shadow-sm"
+                      >
+                        <Edit3 size={13} /> Edit
+                      </button>
+                      <button
+                        onClick={() => void handleDelete(product.id)}
+                        className="flex-1 py-2 px-3 border border-red-200 text-red-600 font-semibold rounded-xl hover:bg-red-50 transition text-xs inline-flex items-center justify-center gap-1.5 bg-white shadow-sm"
+                      >
+                        <Trash2 size={13} /> Delete
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           ))}
