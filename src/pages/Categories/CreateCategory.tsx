@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Layers, PackagePlus, Plus } from "lucide-react";
+import { ArrowLeft, Layers, PackagePlus } from "lucide-react";
 import { createCategory } from "../../services/categorieservices";
 import { createproduct } from "../../services/productservices";
 import ImageSelector from "../../components/ImageSelector";

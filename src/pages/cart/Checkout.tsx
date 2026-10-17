@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { Link } from "react-router-dom";
+
 import { ShieldCheck } from "lucide-react";
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xjygrylp";

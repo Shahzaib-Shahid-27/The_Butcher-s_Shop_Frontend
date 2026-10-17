@@ -92,7 +92,7 @@ export const CategoryProductsPage: React.FC = () => {
           <p className="text-neutral-500 text-xs mt-1">Showing all items available under this category.</p>
         </div>
 
-        {localStorage.getItem("role") === "ADMIN" && (
+        {isAdmin && (
           <button
             onClick={() => navigate("/createproduct")}
             className="inline-flex items-center gap-2 rounded-xl bg-neutral-900 px-5 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md hover:bg-neutral-800 transition"
@@ -154,7 +154,7 @@ export const CategoryProductsPage: React.FC = () => {
                   <ShoppingBag size={14} /> Add to Bag
                 </button>
 
-                {localStorage.getItem("role") === "ADMIN" && (
+                {isAdmin && (
                   <>
                     <div className="border-t border-neutral-100 my-3" />
                     <div className="flex gap-2">

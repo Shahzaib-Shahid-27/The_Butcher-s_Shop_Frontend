@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Layers, Save } from "lucide-react";
+import { ArrowLeft, Save } from "lucide-react";
 import { getCategoryById, updateCategory } from "../../services/categorieservices";
 import ImageSelector from "../../components/ImageSelector";
 import type { UpdateCategoryType } from "../../types/category.ts";

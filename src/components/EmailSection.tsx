@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ShieldCheck, ShoppingBag, ArrowLeft, Package, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, ArrowLeft, Package } from "lucide-react";
 
 interface CartItem {
   id: string | number;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Lock, Eye, EyeOff, ArrowLeft, ShieldCheck, Mail } from "lucide-react";
+import { Lock, Eye, EyeOff, ArrowLeft, Mail } from "lucide-react";
 import { resetPassword } from "../../services/authService";
 
 export default function ForgotPassword() {

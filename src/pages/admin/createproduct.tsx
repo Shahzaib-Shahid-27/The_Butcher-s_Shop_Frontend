@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Plus, ArrowLeft, PackageCheck } from "lucide-react";
+import {  ArrowLeft } from "lucide-react";
 
 import { createproduct } from "../../services/productservices";
 import { getAllCategories, createCategory } from "../../services/categorieservices";

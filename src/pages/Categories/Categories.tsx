@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
-import { Plus, Edit3, Trash2, Folder, ImageOff } from "lucide-react";
+import { Plus, Edit3, Trash2, Folder } from "lucide-react";
 
 interface Category {
   id: string;

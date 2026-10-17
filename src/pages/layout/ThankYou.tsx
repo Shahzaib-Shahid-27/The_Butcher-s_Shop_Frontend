@@ -1,4 +1,4 @@
-import React from "react";
+
 import { useNavigate } from "react-router-dom";
 import { CheckCircle2, ShoppingBag, ShieldCheck } from "lucide-react";
 
