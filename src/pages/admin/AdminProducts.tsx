@@ -101,7 +101,7 @@ export default function AdminProducts() {
               No products found. Create your first product.
             </p>
           ) : (
-            <table className="w-full min-w-[700px] text-left border-collapse">
+            <table className="w-full min-w-175 text-left border-collapse">
               <thead className="bg-neutral-50 text-[11px] uppercase tracking-wider text-neutral-500 border-b border-neutral-200">
                 <tr>
                   <th className="p-4 font-semibold">Product</th>

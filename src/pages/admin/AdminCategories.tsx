@@ -105,7 +105,7 @@ export default function AdminCategories() {
               No categories found. Create your first category.
             </p>
           ) : (
-            <table className="w-full min-w-[650px] text-left border-collapse">
+            <table className="w-full min-w-162.5 text-left border-collapse">
               <thead className="bg-neutral-50 text-[11px] uppercase tracking-wider text-neutral-500 border-b border-neutral-200">
                 <tr>
                   <th className="p-4 font-semibold">Category</th>
