@@ -17,9 +17,7 @@ const Login = lazy(() => import("./pages/auth/login"));
 const Register = lazy(() => import("./pages/auth/register"));
 const Forgetpass = lazy(() => import("./pages/auth/forgetpass"));
 const VerfyEmail = lazy(() => import("./pages/auth/verfiemail"));
-const GoogleSuccess = lazy(
-  () => import("./pages/google/GoogleSuccess")
-);
+const GoogleSuccess = lazy(() => import("./pages/google/GoogleSuccess"));
 
 // Store & products
 const Home = lazy(() => import("./pages/store/home"));
@@ -77,7 +75,6 @@ export default function App() {
     "/register",
     "/forgetpass",
     "/verfyemail",
-    "/google-success",
   ].includes(location.pathname);
 
   return (
