@@ -112,7 +112,7 @@ export default function App() {
                 <Route path="/forgetpass" element={<Forgetpass />} />
                 <Route path="/verfyemail" element={<VerfyEmail />} />
                 <Route
-                  path="/google-success"
+                  path="/googlesuccess"
                   element={<GoogleSuccess />}
                 />
 
