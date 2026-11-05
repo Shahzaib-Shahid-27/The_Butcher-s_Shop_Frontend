@@ -83,16 +83,16 @@ export default function Home() {
 
       {/* Hero */}
       <section className="relative mx-auto max-w-[1600px] px-4 py-8 sm:px-8 lg:px-12 lg:py-12">
-        <div className="relative min-h-[560px] overflow-hidden rounded-[28px] bg-[#351D1D] sm:min-h-[620px]">
+        <div className="relative min-h-140 overflow-hidden rounded-[28px] bg-[#351D1D] sm:min-h-155">
           <img
             src="https://images.unsplash.com/photo-1607082349566-187342175e2f?w=1800&q=90"
             alt="Modern online shopping experience"
             className="absolute inset-0 h-full w-full object-cover"
           />
 
-          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/65 to-black/20" />
+          <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/65 to-black/20" />
 
-          <div className="relative z-10 flex min-h-[560px] items-center px-7 py-16 sm:min-h-[620px] sm:px-14 lg:px-20">
+          <div className="relative z-10 flex min-h-140 items-center px-7 py-16 sm:min-h-155 sm:px-14 lg:px-20">
             <motion.div
               initial={{ opacity: 0, x: -25 }}
               animate={{ opacity: 1, x: 0 }}
@@ -251,7 +251,7 @@ export default function Home() {
               <Link
                 key={category.id}
                 to={`/categories/${category.id}/products`}
-                className="group relative h-[330px] overflow-hidden rounded-2xl bg-[#351D1D]"
+                className="group relative h-82.5 overflow-hidden rounded-2xl bg-[#351D1D]"
               >
                 <img
                   src={
@@ -262,7 +262,7 @@ export default function Home() {
                   className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-transparent" />
 
                 <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-6 text-white">
                   <div>
@@ -297,8 +297,8 @@ export default function Home() {
       {/* Online Shopping Banner */}
       <section className="mx-auto max-w-7xl px-5 py-12 sm:px-8 lg:px-12">
         <div className="relative overflow-hidden rounded-[28px] bg-[#8B2635]">
-          <div className="absolute -right-16 -top-28 h-80 w-80 rounded-full border-[45px] border-white/5" />
-          <div className="absolute -bottom-36 right-40 h-80 w-80 rounded-full border-[45px] border-white/5" />
+          <div className="absolute -right-16 -top-28 h-80 w-80 rounded-full border-45 border-white/5" />
+          <div className="absolute -bottom-36 right-40 h-80 w-80 rounded-full border-45 border-white/5" />
 
           <div className="relative grid items-center gap-8 px-8 py-14 sm:px-14 lg:grid-cols-2 lg:px-20">
             <div className="text-white">
@@ -344,7 +344,7 @@ export default function Home() {
 
       {/* Online Shopping Experience */}
       <section className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 sm:px-8 lg:grid-cols-2 lg:px-12">
-        <div className="relative h-[350px] overflow-hidden rounded-[24px] sm:h-[460px]">
+        <div className="relative h-87.5 overflow-hidden rounded-3xl sm:h-115">
           <img
             src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&q=85"
             alt="Customer completing an online shopping payment"
