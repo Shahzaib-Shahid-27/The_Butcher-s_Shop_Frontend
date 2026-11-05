@@ -1,6 +1,13 @@
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Package, FolderTree, Plus, Store, ArrowRight } from "lucide-react";
+import {
+  Package,
+  FolderTree,
+  Plus,
+  Store,
+  ArrowRight,
+} from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -38,17 +45,35 @@ export default function AdminDashboard() {
   }, []);
 
   const cards = [
-    { title: "Products", count: products, link: "/admin/products", icon: Package },
-    { title: "Categories", count: categories, link: "/admin/categories", icon: FolderTree },
+    {
+      title: "Products",
+      count: products,
+      link: "/admin/products",
+      icon: Package,
+      description: "Manage your store inventory and products.",
+    },
+    {
+      title: "Categories",
+      count: categories,
+      link: "/admin/categories",
+      icon: FolderTree,
+      description: "Organize your products into categories.",
+    },
   ];
 
   return (
-    <section className="min-h-screen bg-white px-4 py-12 text-neutral-900 sm:px-8 font-sans">
+    <section className="min-h-screen bg-[#FBF8F3] px-4 py-12 font-sans text-[#351D1D] sm:px-8">
       <div className="mx-auto max-w-7xl">
-        <div className="border-b border-neutral-100 pb-6">
-          <span className="text-xs font-bold tracking-widest text-neutral-400 uppercase">Control Center</span>
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight mt-1">Admin Dashboard</h1>
-          <p className="mt-1 text-xs text-neutral-500">
+        <div className="border-b border-[#E8DED3] pb-6">
+          <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#927D70]">
+            Control Center
+          </span>
+
+          <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">
+            Admin Dashboard
+          </h1>
+
+          <p className="mt-2 text-xs text-[#927D70]">
             Manage your store inventory, catalog products, and categories.
           </p>
         </div>
@@ -62,48 +87,71 @@ export default function AdminDashboard() {
         <div className="mt-8 grid gap-6 sm:grid-cols-2">
           {cards.map((card) => {
             const IconComponent = card.icon;
+
             return (
               <Link
                 key={card.title}
                 to={card.link}
-                className="group rounded-2xl border border-neutral-200 bg-neutral-50/50 p-6 transition hover:border-neutral-900 hover:bg-white shadow-sm"
+                className="group rounded-2xl border border-[#E8DED3] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-[#8B2635] hover:shadow-lg"
               >
                 <div className="flex items-center justify-between">
-                  <p className="text-xs font-bold uppercase tracking-wider text-neutral-500">{card.title}</p>
-                  <div className="p-2.5 rounded-xl bg-white border border-neutral-200 text-neutral-900 shadow-sm group-hover:bg-neutral-900 group-hover:text-white transition">
-                    <IconComponent size={18} />
+                  <p className="text-xs font-bold uppercase tracking-wider text-[#927D70]">
+                    {card.title}
+                  </p>
+
+                  <div className="rounded-xl border border-[#E8DED3] bg-[#F4EEE6] p-3 text-[#8B2635] transition group-hover:border-[#8B2635] group-hover:bg-[#8B2635] group-hover:text-white">
+                    <IconComponent size={20} />
                   </div>
                 </div>
-                <p className="mt-4 text-4xl font-black tracking-tight">{card.count}</p>
-                <p className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-neutral-900 transition group-hover:translate-x-1">
-                  Manage {card.title.toLowerCase()} <ArrowRight size={14} />
+
+                <p className="mt-5 text-4xl font-black tracking-tight text-[#351D1D]">
+                  {card.count}
+                </p>
+
+                <p className="mt-2 text-xs text-[#927D70]">
+                  {card.description}
+                </p>
+
+                <p className="mt-5 inline-flex items-center gap-2 text-xs font-bold text-[#8B2635] transition group-hover:translate-x-1">
+                  Manage {card.title.toLowerCase()}
+                  <ArrowRight size={14} />
                 </p>
               </Link>
             );
           })}
         </div>
 
-        <div className="mt-10 rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
-          <h2 className="text-base font-bold tracking-tight mb-4">Quick Actions</h2>
+        <div className="mt-10 rounded-2xl border border-[#E8DED3] bg-white p-6 shadow-sm sm:p-8">
+          <div className="mb-6">
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8B2635]">
+              Store Management
+            </span>
+            <h2 className="mt-2 text-xl font-black tracking-tight text-[#351D1D]">
+              Quick Actions
+            </h2>
+            <p className="mt-1 text-xs text-[#927D70]">
+              Quickly access your store management tools.
+            </p>
+          </div>
 
           <div className="flex flex-wrap gap-3">
             <Link
               to="/admin/products/create"
-              className="inline-flex items-center gap-2 rounded-xl bg-neutral-900 px-5 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md hover:bg-neutral-800 transition"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#8B2635] px-5 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md transition hover:bg-[#70202C]"
             >
               <Plus size={15} /> Create Product
             </Link>
 
             <Link
               to="/createcategory"
-              className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-neutral-50 px-5 py-3 text-xs font-bold uppercase tracking-wider text-neutral-900 hover:bg-neutral-100 transition shadow-sm"
+              className="inline-flex items-center gap-2 rounded-xl border border-[#E8DED3] bg-[#F4EEE6] px-5 py-3 text-xs font-bold uppercase tracking-wider text-[#351D1D] transition hover:border-[#8B2635] hover:text-[#8B2635]"
             >
               <Plus size={15} /> Create Category
             </Link>
 
             <Link
               to="/product"
-              className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-5 py-3 text-xs font-bold uppercase tracking-wider text-neutral-700 hover:border-neutral-900 hover:text-neutral-900 transition shadow-sm"
+              className="inline-flex items-center gap-2 rounded-xl border border-[#E8DED3] bg-white px-5 py-3 text-xs font-bold uppercase tracking-wider text-[#6D5B52] transition hover:border-[#8B2635] hover:text-[#8B2635]"
             >
               <Store size={15} /> View Store Products
             </Link>

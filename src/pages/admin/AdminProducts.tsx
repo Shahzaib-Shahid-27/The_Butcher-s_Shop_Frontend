@@ -1,3 +1,4 @@
+
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Plus, ArrowLeft, Trash2, Edit3, Package } from "lucide-react";
@@ -55,14 +56,10 @@ export default function AdminProducts() {
 
       const response = await fetch(`${API_URL}/products/${id}`, {
         method: "DELETE",
-        headers: token
-          ? { Authorization: `Bearer ${token}` }
-          : {},
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
 
-      if (!response.ok) {
-        throw new Error("Delete failed");
-      }
+      if (!response.ok) throw new Error("Delete failed");
 
       setProducts((current) => current.filter((item) => item.id !== id));
     } catch {
@@ -71,17 +68,24 @@ export default function AdminProducts() {
   }
 
   return (
-    <section className="min-h-screen bg-white px-4 py-12 text-neutral-900 sm:px-8 font-sans">
+    <section className="min-h-screen bg-[#FBF8F3] px-4 py-12 font-sans text-[#351D1D] sm:px-8">
       <div className="mx-auto max-w-7xl">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-100 pb-6">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#E8DED3] pb-6">
           <div>
-            <span className="text-xs font-bold tracking-widest text-neutral-400 uppercase">Inventory Catalog</span>
-            <h1 className="text-3xl font-black tracking-tight mt-1">Manage Products</h1>
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#927D70]">
+              Inventory Catalog
+            </span>
+            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">
+              Manage Products
+            </h1>
+            <p className="mt-2 text-xs text-[#927D70]">
+              View, edit, and manage your store products.
+            </p>
           </div>
 
           <Link
             to="/admin/products/create"
-            className="inline-flex items-center gap-2 rounded-xl bg-neutral-900 px-5 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md hover:bg-neutral-800 transition"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#8B2635] px-5 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md transition hover:bg-[#70202C]"
           >
             <Plus size={16} /> Create Product
           </Link>
@@ -93,30 +97,37 @@ export default function AdminProducts() {
           </p>
         )}
 
-        <div className="mt-8 overflow-x-auto rounded-2xl border border-neutral-200 bg-white shadow-sm">
+        <div className="mt-8 overflow-x-auto rounded-2xl border border-[#E8DED3] bg-white shadow-sm">
           {loading ? (
-            <p className="p-12 text-center text-xs font-medium text-neutral-400">Loading products...</p>
-          ) : products.length === 0 ? (
-            <p className="p-12 text-center text-xs font-medium text-neutral-400">
-              No products found. Create your first product.
+            <p className="p-12 text-center text-xs font-medium text-[#927D70]">
+              Loading products...
             </p>
+          ) : products.length === 0 ? (
+            <div className="p-12 text-center">
+              <p className="text-sm font-bold text-[#351D1D]">
+                No products found.
+              </p>
+              <p className="mt-2 text-xs text-[#927D70]">
+                Create your first product to get started.
+              </p>
+            </div>
           ) : (
-            <table className="w-full min-w-175 text-left border-collapse">
-              <thead className="bg-neutral-50 text-[11px] uppercase tracking-wider text-neutral-500 border-b border-neutral-200">
+            <table className="w-full min-w-175 border-collapse text-left">
+              <thead className="border-b border-[#E8DED3] bg-[#F4EEE6] text-[11px] uppercase tracking-wider text-[#6D5B52]">
                 <tr>
-                  <th className="p-4 font-semibold">Product</th>
-                  <th className="p-4 font-semibold">Price</th>
-                  <th className="p-4 font-semibold">Stock</th>
-                  <th className="p-4 font-semibold">Status</th>
-                  <th className="p-4 font-semibold text-right">Actions</th>
+                  <th className="p-4 font-bold">Product</th>
+                  <th className="p-4 font-bold">Price</th>
+                  <th className="p-4 font-bold">Stock</th>
+                  <th className="p-4 font-bold">Status</th>
+                  <th className="p-4 text-right font-bold">Actions</th>
                 </tr>
               </thead>
 
-              <tbody className="divide-y divide-neutral-100 text-xs">
+              <tbody className="divide-y divide-[#E8DED3] text-xs">
                 {products.map((product) => (
                   <tr
                     key={product.id}
-                    className="hover:bg-neutral-50/50 transition"
+                    className="transition hover:bg-[#FBF8F3]"
                   >
                     <td className="p-4">
                       <div className="flex items-center gap-3">
@@ -124,35 +135,39 @@ export default function AdminProducts() {
                           <img
                             src={product.image}
                             alt={product.name}
-                            className="h-10 w-10 rounded-lg object-cover border border-neutral-200"
+                            className="h-11 w-11 rounded-xl border border-[#E8DED3] object-cover"
                           />
                         ) : (
-                          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-neutral-100 border border-neutral-200">
-                            <Package size={16} className="text-neutral-400" />
+                          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#E8DED3] bg-[#F4EEE6]">
+                            <Package size={17} className="text-[#927D70]" />
                           </div>
                         )}
 
                         <div>
-                          <p className="font-semibold text-neutral-900">{product.name}</p>
-                          <p className="max-w-xs truncate text-[11px] text-neutral-500">
+                          <p className="font-bold text-[#351D1D]">
+                            {product.name}
+                          </p>
+                          <p className="max-w-xs truncate text-[11px] text-[#927D70]">
                             {product.description || "No description"}
                           </p>
                         </div>
                       </div>
                     </td>
 
-                    <td className="p-4 font-semibold text-neutral-900">
+                    <td className="p-4 font-bold text-[#8B2635]">
                       ${Number(product.price).toFixed(2)}
                     </td>
 
-                    <td className="p-4 text-neutral-700 font-medium">{product.stock} units</td>
+                    <td className="p-4 font-medium text-[#6D5B52]">
+                      {product.stock} units
+                    </td>
 
                     <td className="p-4">
                       <span
                         className={
                           product.isActive === false
-                            ? "rounded-full bg-red-50 border border-red-200 px-3 py-1 text-[10px] font-bold text-red-600 uppercase"
-                            : "rounded-full bg-emerald-50 border border-emerald-200 px-3 py-1 text-[10px] font-bold text-emerald-700 uppercase"
+                            ? "rounded-full border border-red-200 bg-red-50 px-3 py-1 text-[10px] font-bold uppercase text-red-600"
+                            : "rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[10px] font-bold uppercase text-emerald-700"
                         }
                       >
                         {product.isActive === false ? "Inactive" : "Active"}
@@ -163,7 +178,7 @@ export default function AdminProducts() {
                       <div className="flex items-center justify-end gap-3">
                         <Link
                           to={`/editproduct/${product.id}`}
-                          className="inline-flex items-center gap-1 text-neutral-600 hover:text-neutral-900 font-semibold transition"
+                          className="inline-flex items-center gap-1 font-semibold text-[#6D5B52] transition hover:text-[#8B2635]"
                         >
                           <Edit3 size={14} /> Edit
                         </Link>
@@ -171,7 +186,7 @@ export default function AdminProducts() {
                         <button
                           type="button"
                           onClick={() => deleteProduct(product.id)}
-                          className="inline-flex items-center gap-1 text-red-500 hover:text-red-700 font-semibold transition"
+                          className="inline-flex items-center gap-1 font-semibold text-red-500 transition hover:text-red-700"
                         >
                           <Trash2 size={14} /> Delete
                         </button>
@@ -186,7 +201,7 @@ export default function AdminProducts() {
 
         <Link
           to="/admin"
-          className="mt-6 inline-flex items-center gap-2 text-xs font-bold text-neutral-600 hover:text-neutral-900 transition"
+          className="mt-6 inline-flex items-center gap-2 text-xs font-bold text-[#6D5B52] transition hover:text-[#8B2635]"
         >
           <ArrowLeft size={14} /> Back to dashboard
         </Link>

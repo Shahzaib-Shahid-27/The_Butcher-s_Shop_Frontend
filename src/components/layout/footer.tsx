@@ -1,73 +1,121 @@
+
 import { Link } from "react-router-dom";
 import { ShieldCheck } from "lucide-react";
 
 export default function Footer() {
+  const isAdmin = localStorage.getItem("role") === "ADMIN";
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <footer className="relative border-t border-neutral-200 bg-white font-sans text-neutral-900">
-      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-        
+    <footer className="relative border-t border-[#E8DED3] bg-[#FBF8F3] font-sans text-[#351D1D]">
+
+      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-10 sm:px-6 lg:px-8">
+
         {/* Brand Logo & Tagline */}
-        <div className="flex items-center gap-3">
-          <Link
-            to="/home"
-            onClick={scrollToTop}
-            className="flex items-center gap-2.5"
-          >
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-900 text-white shadow-sm">
-              <span className="font-black tracking-tighter text-sm">BS</span>
-            </div>
-            <span className="text-lg font-black tracking-tighter uppercase">
-              The Butcher's Shop
-            </span>
-          </Link>
-          <span className="hidden text-xs text-neutral-300 sm:inline">|</span>
-          <p className="text-xs text-neutral-500 font-medium">
-            Discover fresh quality products. Shop with confidence.
-          </p>
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+
+          <div className="flex items-center gap-3">
+            <Link
+              to="/home"
+              onClick={scrollToTop}
+              className="flex shrink-0 items-center gap-3"
+            >
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#8B2635] text-white shadow-sm">
+                <span className="text-lg font-black tracking-tighter">
+                  BS
+                </span>
+              </div>
+
+              <div>
+                <span className="block text-lg font-bold tracking-tight text-[#351D1D]">
+                  The Butcher's Shop
+                </span>
+               
+              </div>
+            </Link>
+          </div>
+
+          
         </div>
+
+        {/* Divider */}
+        <div className="h-px w-full bg-[#E8DED3]" />
 
         {/* Navigation Links */}
-        <div className="flex flex-wrap items-center gap-5 text-xs font-semibold text-neutral-600">
-          <Link onClick={scrollToTop} className="transition hover:text-neutral-900" to="/product">
-            Products
-          </Link>
-          <Link onClick={scrollToTop} className="transition hover:text-neutral-900" to="/categories">
-            Categories
-          </Link>
-          <Link onClick={scrollToTop} className="transition hover:text-neutral-900" to="/cart">
-            Cart
-          </Link>
-          <span className="text-neutral-300">•</span>
-          <Link onClick={scrollToTop} className="transition hover:text-neutral-900" to="/terms">
-            Terms of Service
-          </Link>
-          <Link onClick={scrollToTop} className="transition hover:text-neutral-900" to="/privacy">
-            Privacy Policy
-          </Link>
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
 
-          {/* Admin Footer Link */}
-          {localStorage.getItem("role") === "ADMIN" && (
-            <>
-              <span className="text-neutral-300">•</span>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-4 text-sm font-medium text-[#6D5B52]">
+
+            <Link
+              onClick={scrollToTop}
+              className="transition-colors hover:text-[#8B2635]"
+              to="/product"
+            >
+              Products
+            </Link>
+
+            <Link
+              onClick={scrollToTop}
+              className="transition-colors hover:text-[#8B2635]"
+              to="/categories"
+            >
+              Categories
+            </Link>
+
+            <Link
+              onClick={scrollToTop}
+              className="transition-colors hover:text-[#8B2635]"
+              to="/cart"
+            >
+              Cart
+            </Link>
+
+
+            {/* Admin Footer Link */}
+            {isAdmin && (
               <Link
                 onClick={scrollToTop}
-                className="transition text-neutral-900 font-bold inline-flex items-center gap-1"
+                className="inline-flex items-center gap-2 font-bold text-[#8B2635] transition-colors hover:text-[#6F1D2A]"
                 to="/admin"
               >
-                <ShieldCheck size={14} /> Admin Portal
+                <ShieldCheck size={16} />
+                Admin Portal
               </Link>
-            </>
-          )}
+            )}
+          </div>
+
+          <p className="text-xs font-medium text-[#927D70]">
+            Freshness Delivered to Your Doorstep
+          </p>
         </div>
       </div>
 
-      <div className="border-t border-neutral-100 py-4 text-center text-[11px] text-neutral-400">
-        © {new Date().getFullYear()} The Butcher's Shop. All rights reserved.
+      {/* Copyright */}
+      <div className="border-t border-[#E8DED3] bg-[#F4EEE6] px-4 py-5 flex justify-between text-center text-xs text-[#927D70]">
+            <Link
+              onClick={scrollToTop}
+              className="transition-colors hover:text-[#8B2635]"
+              to="/terms"
+            >
+              Terms of Service
+            </Link>
+
+              © {new Date().getFullYear()} The Butcher's Shop. All rights reserved.
+
+            <Link
+              onClick={scrollToTop}
+              className="transition-colors hover:text-[#8B2635]"
+              to="/privacy"
+            >
+              Privacy Policy
+            </Link>
+        
+
       </div>
+
     </footer>
   );
 }

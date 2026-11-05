@@ -3,27 +3,25 @@ import { Suspense, lazy } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
-// Layout components
 import Header from "./components/layout/header";
 import Footer from "./components/layout/footer";
 import CustomCursor from "./components/cursor";
 
-// Route protection
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 
-// Authentication pages
+// Authentication
 const Login = lazy(() => import("./pages/auth/login"));
 const Register = lazy(() => import("./pages/auth/register"));
 const Forgetpass = lazy(() => import("./pages/auth/forgetpass"));
 const VerfyEmail = lazy(() => import("./pages/auth/verfiemail"));
 const GoogleSuccess = lazy(() => import("./pages/google/GoogleSuccess"));
 
-// Store & products
+// Store
 const Home = lazy(() => import("./pages/store/home"));
 const Products = lazy(() => import("./pages/store/Products"));
 
-// Admin pages
+// Admin
 const CreateProduct = lazy(() => import("./pages/admin/createproduct"));
 const EditProduct = lazy(() => import("./pages/admin/EditProduct"));
 const AdminDashboard = lazy(
@@ -36,7 +34,7 @@ const AdminCategories = lazy(
   () => import("./pages/admin/AdminCategories")
 );
 
-// Category pages
+// Categories
 const Categories = lazy(
   () => import("./pages/Categories/Categories")
 );
@@ -52,12 +50,12 @@ const CategoryProductsPage = lazy(() =>
   }))
 );
 
-// Cart & checkout
+// Cart
 const Cart = lazy(() => import("./pages/store/cart"));
 const CartItems = lazy(() => import("./pages/cart/CartItems"));
 const Checkout = lazy(() => import("./pages/cart/Checkout"));
 
-// Policy pages
+// Policies
 const TermsOfService = lazy(
   () => import("./pages/policy/TermsOfService")
 );
@@ -68,17 +66,18 @@ const PrivacyPolicy = lazy(
 export default function App() {
   const location = useLocation();
 
-  // Hide header and footer on authentication pages
+  // Hide the store header and footer on authentication pages.
   const hideLayout = [
-    "/",
     "/login",
     "/register",
     "/forgetpass",
     "/verfyemail",
+    "/google-success",
   ].includes(location.pathname);
 
   return (
-    <div className="flex min-h-screen flex-col bg-white text-neutral-900 font-sans selection:bg-neutral-900 selection:text-white">
+    <div className="flex min-h-screen flex-col bg-[#FAF8F5] font-sans text-neutral-900 selection:bg-[#781F2B] selection:text-white">
+
       {!hideLayout && <Header />}
 
       <CustomCursor />
@@ -90,18 +89,21 @@ export default function App() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.18 }}
+            transition={{ duration: 0.2 }}
           >
             <Suspense
               fallback={
-                <div className="p-12 text-center text-xs font-semibold text-neutral-400">
-                  Loading...
+                <div className="flex min-h-[50vh] items-center justify-center">
+                  <div className="text-sm font-semibold text-neutral-400">
+                    Loading store...
+                  </div>
                 </div>
               }
             >
               <Routes location={location}>
-                {/* Homepage: Login */}
-                <Route path="/" element={<Login />} />
+
+                {/* Public Store Homepage */}
+                <Route path="/" element={<Home />} />
 
                 {/* Authentication */}
                 <Route path="/login" element={<Login />} />
@@ -122,6 +124,7 @@ export default function App() {
                     </ProtectedRoute>
                   }
                 />
+
                 <Route
                   path="/product"
                   element={
@@ -140,6 +143,7 @@ export default function App() {
                     </ProtectedRoute>
                   }
                 />
+
                 <Route
                   path="/createcategory"
                   element={
@@ -148,6 +152,7 @@ export default function App() {
                     </ProtectedRoute>
                   }
                 />
+
                 <Route
                   path="/editcategory/:id"
                   element={
@@ -156,6 +161,7 @@ export default function App() {
                     </AdminRoute>
                   }
                 />
+
                 <Route
                   path="/categories/:categoryId/products"
                   element={
@@ -174,6 +180,7 @@ export default function App() {
                     </ProtectedRoute>
                   }
                 />
+
                 <Route
                   path="/cartitems"
                   element={
@@ -182,6 +189,7 @@ export default function App() {
                     </ProtectedRoute>
                   }
                 />
+
                 <Route
                   path="/checkout"
                   element={
@@ -200,6 +208,7 @@ export default function App() {
                     </AdminRoute>
                   }
                 />
+
                 <Route
                   path="/admin/products"
                   element={
@@ -208,6 +217,7 @@ export default function App() {
                     </AdminRoute>
                   }
                 />
+
                 <Route
                   path="/admin/products/create"
                   element={
@@ -216,6 +226,7 @@ export default function App() {
                     </AdminRoute>
                   }
                 />
+
                 <Route
                   path="/admin/categories"
                   element={
@@ -224,6 +235,7 @@ export default function App() {
                     </AdminRoute>
                   }
                 />
+
                 <Route
                   path="/editproduct/:id"
                   element={
@@ -233,7 +245,7 @@ export default function App() {
                   }
                 />
 
-                {/* Legal */}
+                {/* Policies */}
                 <Route
                   path="/terms"
                   element={
@@ -242,6 +254,7 @@ export default function App() {
                     </ProtectedRoute>
                   }
                 />
+
                 <Route
                   path="/privacy"
                   element={
@@ -251,8 +264,9 @@ export default function App() {
                   }
                 />
 
-                {/* Unknown URLs go to login */}
+                {/* Unknown URLs */}
                 <Route path="*" element={<Navigate to="/" replace />} />
+
               </Routes>
             </Suspense>
           </motion.div>
@@ -260,6 +274,7 @@ export default function App() {
       </main>
 
       {!hideLayout && <Footer />}
+
     </div>
   );
 }

@@ -1,3 +1,4 @@
+
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Plus, ArrowLeft, Trash2, Edit3 } from "lucide-react";
@@ -53,14 +54,10 @@ export default function AdminCategories() {
 
       const response = await fetch(`${API_URL}/categories/${id}`, {
         method: "DELETE",
-        headers: token
-          ? { Authorization: `Bearer ${token}` }
-          : {},
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
 
-      if (!response.ok) {
-        throw new Error("Delete failed");
-      }
+      if (!response.ok) throw new Error("Delete failed");
 
       setCategories((current) =>
         current.filter((category) => category.id !== id)
@@ -73,17 +70,24 @@ export default function AdminCategories() {
   }
 
   return (
-    <section className="min-h-screen bg-white px-4 py-12 text-neutral-900 sm:px-8 font-sans">
+    <section className="min-h-screen bg-[#FBF8F3] px-4 py-12 font-sans text-[#351D1D] sm:px-8">
       <div className="mx-auto max-w-7xl">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-100 pb-6">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#E8DED3] pb-6">
           <div>
-            <span className="text-xs font-bold tracking-widest text-neutral-400 uppercase">Management Portal</span>
-            <h1 className="text-3xl font-black tracking-tight mt-1">Manage Categories</h1>
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#927D70]">
+              Management Portal
+            </span>
+            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">
+              Manage Categories
+            </h1>
+            <p className="mt-2 text-xs text-[#927D70]">
+              Organize and manage your store categories.
+            </p>
           </div>
 
           <Link
             to="/createcategory"
-            className="inline-flex items-center gap-2 rounded-xl bg-neutral-900 px-5 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md hover:bg-neutral-800 transition"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#8B2635] px-5 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md transition hover:bg-[#70202C] active:scale-[0.98]"
           >
             <Plus size={16} /> Create Category
           </Link>
@@ -95,31 +99,36 @@ export default function AdminCategories() {
           </p>
         )}
 
-        <div className="mt-8 overflow-x-auto rounded-2xl border border-neutral-200 bg-white shadow-sm">
+        <div className="mt-8 overflow-x-auto rounded-2xl border border-[#E8DED3] bg-white shadow-sm">
           {loading ? (
-            <p className="p-12 text-center text-xs font-medium text-neutral-400">
+            <p className="p-12 text-center text-xs font-medium text-[#927D70]">
               Loading categories...
             </p>
           ) : categories.length === 0 ? (
-            <p className="p-12 text-center text-xs font-medium text-neutral-400">
-              No categories found. Create your first category.
-            </p>
+            <div className="p-12 text-center">
+              <p className="text-sm font-bold text-[#351D1D]">
+                No categories found.
+              </p>
+              <p className="mt-2 text-xs text-[#927D70]">
+                Create your first category to get started.
+              </p>
+            </div>
           ) : (
-            <table className="w-full min-w-162.5 text-left border-collapse">
-              <thead className="bg-neutral-50 text-[11px] uppercase tracking-wider text-neutral-500 border-b border-neutral-200">
+            <table className="w-full min-w-162.5 border-collapse text-left">
+              <thead className="border-b border-[#E8DED3] bg-[#F4EEE6] text-[11px] uppercase tracking-wider text-[#6D5B52]">
                 <tr>
-                  <th className="p-4 font-semibold">Category</th>
-                  <th className="p-4 font-semibold">Description</th>
-                  <th className="p-4 font-semibold">Status</th>
-                  <th className="p-4 font-semibold text-right">Actions</th>
+                  <th className="p-4 font-bold">Category</th>
+                  <th className="p-4 font-bold">Description</th>
+                  <th className="p-4 font-bold">Status</th>
+                  <th className="p-4 text-right font-bold">Actions</th>
                 </tr>
               </thead>
 
-              <tbody className="divide-y divide-neutral-100 text-xs">
+              <tbody className="divide-y divide-[#E8DED3] text-xs">
                 {categories.map((category) => (
                   <tr
                     key={category.id}
-                    className="hover:bg-neutral-50/50 transition"
+                    className="transition hover:bg-[#FBF8F3]"
                   >
                     <td className="p-4">
                       <div className="flex items-center gap-3">
@@ -127,19 +136,23 @@ export default function AdminCategories() {
                           <img
                             src={category.image}
                             alt={category.name}
-                            className="h-10 w-10 rounded-lg object-cover border border-neutral-200"
+                            className="h-11 w-11 rounded-xl border border-[#E8DED3] object-cover"
                           />
                         ) : (
-                          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-neutral-100 border border-neutral-200">
-                            <span className="text-[10px] text-neutral-400 font-medium">No img</span>
+                          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#E8DED3] bg-[#F4EEE6]">
+                            <span className="text-[9px] font-semibold text-[#927D70]">
+                              No img
+                            </span>
                           </div>
                         )}
 
-                        <span className="font-semibold text-neutral-900">{category.name}</span>
+                        <span className="font-bold text-[#351D1D]">
+                          {category.name}
+                        </span>
                       </div>
                     </td>
 
-                    <td className="p-4 text-neutral-500 max-w-xs truncate">
+                    <td className="max-w-xs truncate p-4 text-[#927D70]">
                       {category.description || "No description"}
                     </td>
 
@@ -147,8 +160,8 @@ export default function AdminCategories() {
                       <span
                         className={
                           category.isActive === false
-                            ? "rounded-full bg-red-50 border border-red-200 px-3 py-1 text-[10px] font-bold text-red-600 uppercase"
-                            : "rounded-full bg-emerald-50 border border-emerald-200 px-3 py-1 text-[10px] font-bold text-emerald-700 uppercase"
+                            ? "rounded-full border border-red-200 bg-red-50 px-3 py-1 text-[10px] font-bold uppercase text-red-600"
+                            : "rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[10px] font-bold uppercase text-emerald-700"
                         }
                       >
                         {category.isActive === false ? "Inactive" : "Active"}
@@ -159,7 +172,7 @@ export default function AdminCategories() {
                       <div className="flex items-center justify-end gap-3">
                         <Link
                           to={`/editcategory/${category.id}`}
-                          className="inline-flex items-center gap-1 text-neutral-600 hover:text-neutral-900 font-semibold transition"
+                          className="inline-flex items-center gap-1 font-semibold text-[#6D5B52] transition hover:text-[#8B2635]"
                         >
                           <Edit3 size={14} /> Edit
                         </Link>
@@ -167,7 +180,7 @@ export default function AdminCategories() {
                         <button
                           type="button"
                           onClick={() => deleteCategory(category.id)}
-                          className="inline-flex items-center gap-1 text-red-500 hover:text-red-700 font-semibold transition"
+                          className="inline-flex items-center gap-1 font-semibold text-red-500 transition hover:text-red-700"
                         >
                           <Trash2 size={14} /> Delete
                         </button>
@@ -182,7 +195,7 @@ export default function AdminCategories() {
 
         <Link
           to="/admin"
-          className="mt-6 inline-flex items-center gap-2 text-xs font-bold text-neutral-600 hover:text-neutral-900 transition"
+          className="mt-6 inline-flex items-center gap-2 text-xs font-bold text-[#6D5B52] transition hover:text-[#8B2635]"
         >
           <ArrowLeft size={14} /> Back to dashboard
         </Link>

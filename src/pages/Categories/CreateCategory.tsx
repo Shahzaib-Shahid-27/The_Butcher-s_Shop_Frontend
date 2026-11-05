@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Layers, PackagePlus } from "lucide-react";
@@ -8,15 +9,11 @@ import ImageSelector from "../../components/ImageSelector";
 export default function CreateCategory() {
   const navigate = useNavigate();
 
-  // Category State
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-
-  // Image handling states using ImageSelector
   const [image, setImage] = useState("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  // Product Inline Addition State
   const [includeProduct, setIncludeProduct] = useState(false);
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
@@ -28,6 +25,7 @@ export default function CreateCategory() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (!name.trim()) {
       setMessage("Category name is required.");
       return;
@@ -41,8 +39,8 @@ export default function CreateCategory() {
 
       const categoryPayload = {
         name: name.trim(),
-        description: description.trim() ? description.trim() : undefined,
-        image: finalImage ? finalImage : undefined,
+        description: description.trim() || undefined,
+        image: finalImage || undefined,
       };
 
       const result = await createCategory(categoryPayload);
@@ -56,7 +54,7 @@ export default function CreateCategory() {
           price: Number(productPrice),
           stock: Number(productStock),
           categoryId: createdCategoryId,
-          image: finalImage ? finalImage : undefined,
+          image: finalImage || undefined,
         };
 
         await createproduct(productPayload);
@@ -70,7 +68,10 @@ export default function CreateCategory() {
         });
       }
     } catch (error: unknown) {
-      const err = error as { response?: { data?: { message?: string } } };
+      const err = error as {
+        response?: { data?: { message?: string } };
+      };
+
       setMessage(
         err.response?.data?.message ??
           "Failed to create category. Please check your inputs."
@@ -81,74 +82,89 @@ export default function CreateCategory() {
   };
 
   const inputStyle =
-    "w-full rounded-xl border border-neutral-200 bg-neutral-50 py-3 px-4 text-xs text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900 focus:bg-white focus:ring-1 focus:ring-neutral-900";
+    "w-full rounded-xl border border-[#E8DED3] bg-[#FBF8F3] px-4 py-3 text-sm text-[#351D1D] outline-none transition placeholder:text-[#B6A394] focus:border-[#8B2635] focus:bg-white focus:ring-1 focus:ring-[#8B2635]";
 
   return (
-    <div className="relative min-h-screen bg-white font-sans text-neutral-900 px-4 py-12 selection:bg-neutral-900 selection:text-white">
-      
-      {/* Top Banner */}
-      <div className="absolute top-0 inset-x-0 bg-neutral-900 text-white text-[11px] py-2 px-4 text-center font-medium tracking-wide">
-        Category Registration Suite — The Butcher's Shop
+    <div className="min-h-screen bg-[#FBF8F3] px-4 py-10 font-sans text-[#351D1D] sm:px-6 lg:py-14">
+      <div className="fixed inset-x-0 top-0 z-20 bg-[#351D1D] px-4 py-2.5 text-center text-[10px] font-bold uppercase tracking-[0.2em] text-white">
+        Butcher Shop — Online Category Management
       </div>
 
-      <div className="relative mx-auto max-w-5xl mt-6">
-        {/* Header Bar */}
-        <div className="mb-8 flex items-center justify-between border-b border-neutral-100 pb-6">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-900 text-white shadow-sm">
-              <span className="font-black tracking-tighter text-base">BS</span>
+      <div className="mx-auto mt-7 max-w-5xl">
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-[#E8DED3] pb-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#8B2635] text-white shadow-md">
+              <span className="text-base font-black tracking-tighter">BS</span>
             </div>
-            <span className="text-xl font-black tracking-tighter uppercase">The Butcher's Shop</span>
+
+            <div>
+              <h2 className="text-lg font-black uppercase tracking-tight text-[#351D1D]">
+                Butcher Shop
+              </h2>
+              <p className="text-[10px] font-semibold text-[#927D70]">
+                Quality You Can Taste
+              </p>
+            </div>
           </div>
 
           <Link
             to="/categories"
-            className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-4 py-2 text-xs font-semibold text-neutral-700 transition hover:border-neutral-900 hover:text-neutral-900 shadow-sm"
+            className="inline-flex items-center gap-2 rounded-xl border border-[#E8DED3] bg-white px-4 py-3 text-xs font-bold text-[#6D5B52] shadow-sm transition hover:border-[#8B2635] hover:text-[#8B2635]"
           >
-            <ArrowLeft size={15} /> Back to Categories
+            <ArrowLeft size={15} />
+            Back to Categories
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-start">
-          {/* Left Hero Column */}
-          <div className="flex flex-col justify-between rounded-2xl border border-neutral-200 bg-neutral-50/50 p-8 lg:col-span-5 lg:p-10">
+        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
+          <div className="flex flex-col justify-between rounded-2xl border border-[#E8DED3] bg-[#F4EEE6] p-8 lg:col-span-5 lg:p-10">
             <div>
-              <span className="inline-block px-3 py-1 mb-6 rounded-full bg-neutral-200/60 text-[10px] font-bold tracking-widest uppercase text-neutral-700">
+              <span className="mb-6 inline-block rounded-full bg-white px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-widest text-[#8B2635]">
                 Catalog Management
               </span>
 
-              <h1 className="text-3xl font-black tracking-tight text-neutral-900 sm:text-4xl leading-tight">
-                CREATE NEW <br />
-                <span className="text-neutral-400">CATEGORY</span> <br />
+              <h1 className="text-3xl font-black leading-tight tracking-tight text-[#351D1D] sm:text-4xl">
+                CREATE NEW
+                <br />
+                <span className="text-[#8B2635]">CATEGORY</span>
+                <br />
                 GROUPING.
               </h1>
 
-              <p className="mt-4 text-xs leading-relaxed text-neutral-600">
-                Organize your product catalog by creating distinct category groupings for your storefront.
+              <p className="mt-5 text-sm leading-7 text-[#6D5B52]">
+                Organize your online product catalog into clear categories so customers can easily discover their favorites.
               </p>
             </div>
 
-            <div className="mt-12 rounded-xl border border-neutral-200 bg-white p-5 shadow-sm space-y-1">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-900">
-                <Layers size={16} className="text-neutral-700" /> Integrated Setup
+            <div className="mt-12 space-y-2 rounded-xl border border-[#E8DED3] bg-white p-5 shadow-sm">
+              <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#351D1D]">
+                <Layers size={17} className="text-[#8B2635]" />
+                Integrated Setup
               </div>
-              <p className="text-xs text-neutral-500">
-                You can create a category and immediately attach its first item in a single submission.
+
+              <p className="text-xs leading-6 text-[#927D70]">
+                Create a category and immediately add its first product in a single submission.
               </p>
             </div>
           </div>
 
-          {/* Right Column Form */}
-          <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-xl shadow-neutral-100 sm:p-8 lg:col-span-7">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold tracking-tight text-neutral-900">Category Information</h2>
-              <p className="mt-1 text-xs text-neutral-500">Enter category specifications and upload a cover asset.</p>
+          <div className="rounded-2xl border border-[#E8DED3] bg-white p-6 shadow-sm sm:p-8 lg:col-span-7">
+            <div className="mb-7">
+              <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#927D70]">
+                New Collection
+              </span>
+              <h2 className="mt-2 text-2xl font-black tracking-tight text-[#351D1D]">
+                Category Information
+              </h2>
+              <p className="mt-2 text-xs text-[#927D70]">
+                Enter category details and select a cover image for your online store.
+              </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label htmlFor="category-name" className="mb-1.5 block text-xs font-semibold text-neutral-700">
-                  Category Name <span className="text-red-500">*</span>
+                <label htmlFor="category-name" className="mb-2 block text-xs font-bold text-[#6D5B52]">
+                  Category Name <span className="text-[#8B2635]">*</span>
                 </label>
                 <input
                   id="category-name"
@@ -162,20 +178,20 @@ export default function CreateCategory() {
               </div>
 
               <div>
-                <label htmlFor="category-description" className="mb-1.5 block text-xs font-semibold text-neutral-700">
-                  Description <span className="text-neutral-400 font-normal">(Optional)</span>
+                <label htmlFor="category-description" className="mb-2 block text-xs font-bold text-[#6D5B52]">
+                  Description{" "}
+                  <span className="font-normal text-[#B6A394]">(Optional)</span>
                 </label>
                 <textarea
                   id="category-description"
                   rows={3}
-                  placeholder="Provide a short description for this category..."
+                  placeholder="Write a short description customers will see..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   className={`${inputStyle} resize-none`}
                 />
               </div>
 
-              {/* REUSABLE IMAGE SELECTOR COMPONENT */}
               <div className="pt-2">
                 <ImageSelector
                   imagePreview={imagePreview}
@@ -185,12 +201,11 @@ export default function CreateCategory() {
                 />
               </div>
 
-              {/* INLINE PRODUCT ADDITION SECTION */}
-              <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-5 mt-6">
-                <div className="flex items-center justify-between">
+              <div className="mt-6 rounded-xl border border-[#E8DED3] bg-[#FBF8F3] p-5">
+                <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
-                    <PackagePlus className="text-neutral-800" size={18} />
-                    <span className="text-xs font-bold text-neutral-900 uppercase tracking-wider">
+                    <PackagePlus size={19} className="text-[#8B2635]" />
+                    <span className="text-xs font-extrabold uppercase tracking-wider text-[#351D1D]">
                       Add First Product Now?
                     </span>
                   </div>
@@ -199,15 +214,15 @@ export default function CreateCategory() {
                     id="includeProductToggle"
                     checked={includeProduct}
                     onChange={(e) => setIncludeProduct(e.target.checked)}
-                    className="h-4 w-4 rounded border-neutral-300 text-neutral-900 focus:ring-neutral-900 accent-neutral-900 cursor-pointer"
+                    className="h-4 w-4 cursor-pointer accent-[#8B2635]"
                   />
                 </div>
 
                 {includeProduct && (
-                  <div className="mt-4 space-y-3 border-t border-neutral-200 pt-4">
+                  <div className="mt-5 space-y-4 border-t border-[#E8DED3] pt-5">
                     <div>
-                      <label className="mb-1 block text-xs font-semibold text-neutral-700">
-                        Product Name <span className="text-red-500">*</span>
+                      <label className="mb-2 block text-xs font-bold text-[#6D5B52]">
+                        Product Name <span className="text-[#8B2635]">*</span>
                       </label>
                       <input
                         type="text"
@@ -220,7 +235,7 @@ export default function CreateCategory() {
                     </div>
 
                     <div>
-                      <label className="mb-1 block text-xs font-semibold text-neutral-700">
+                      <label className="mb-2 block text-xs font-bold text-[#6D5B52]">
                         Product Description
                       </label>
                       <input
@@ -234,11 +249,12 @@ export default function CreateCategory() {
 
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="mb-1 block text-xs font-semibold text-neutral-700">
-                          Price ($) <span className="text-red-500">*</span>
+                        <label className="mb-2 block text-xs font-bold text-[#6D5B52]">
+                          Price ($) <span className="text-[#8B2635]">*</span>
                         </label>
                         <input
                           type="number"
+                          min="0"
                           step="0.01"
                           placeholder="29.99"
                           value={productPrice}
@@ -247,12 +263,14 @@ export default function CreateCategory() {
                           required={includeProduct}
                         />
                       </div>
+
                       <div>
-                        <label className="mb-1 block text-xs font-semibold text-neutral-700">
-                          Stock Quantity <span className="text-red-500">*</span>
+                        <label className="mb-2 block text-xs font-bold text-[#6D5B52]">
+                          Stock Quantity <span className="text-[#8B2635]">*</span>
                         </label>
                         <input
                           type="number"
+                          min="0"
                           placeholder="10"
                           value={productStock}
                           onChange={(e) => setProductStock(e.target.value)}
@@ -271,12 +289,11 @@ export default function CreateCategory() {
                 </div>
               )}
 
-              {/* Action Buttons */}
-              <div className="flex items-center gap-3 pt-4">
+              <div className="flex flex-col gap-3 pt-3 sm:flex-row">
                 <button
                   type="button"
                   onClick={() => navigate("/categories")}
-                  className="flex-1 rounded-xl border border-neutral-200 bg-white py-3.5 text-xs font-semibold text-neutral-700 transition hover:border-neutral-900 hover:text-neutral-900 shadow-sm"
+                  className="flex-1 rounded-xl border border-[#E8DED3] bg-white py-3.5 text-xs font-bold text-[#6D5B52] shadow-sm transition hover:border-[#8B2635] hover:text-[#8B2635]"
                 >
                   Cancel
                 </button>
@@ -285,13 +302,13 @@ export default function CreateCategory() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="flex-1 rounded-xl bg-neutral-900 py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-md transition hover:bg-neutral-800 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex-1 rounded-xl bg-[#8B2635] py-3.5 text-xs font-extrabold uppercase tracking-wider text-white shadow-md transition hover:bg-[#6F1D2A] disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {loading
                       ? "Saving..."
                       : includeProduct
-                      ? "Create Category & Product"
-                      : "Create Category"}
+                        ? "Create Category & Product"
+                        : "Create Category"}
                   </button>
                 )}
               </div>

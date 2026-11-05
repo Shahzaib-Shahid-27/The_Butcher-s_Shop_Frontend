@@ -1,7 +1,11 @@
+
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Save } from "lucide-react";
-import { getCategoryById, updateCategory } from "../../services/categorieservices";
+import { ArrowLeft, Save, Beef } from "lucide-react";
+import {
+  getCategoryById,
+  updateCategory,
+} from "../../services/categorieservices";
 import ImageSelector from "../../components/ImageSelector";
 import type { UpdateCategoryType } from "../../types/category.ts";
 
@@ -11,8 +15,6 @@ export default function EditCategory() {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-
-  // Image handling states using ImageSelector
   const [image, setImage] = useState<string>("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -34,11 +36,11 @@ export default function EditCategory() {
 
         setName(categoryData.name ?? "");
         setDescription(categoryData.description ?? "");
+
         const categoryImg = categoryData.image ?? "";
         setImage(categoryImg);
-        if (categoryImg) {
-          setImagePreview(categoryImg);
-        }
+
+        if (categoryImg) setImagePreview(categoryImg);
       } catch (error: unknown) {
         const err = error as {
           response?: { data?: { message?: string } };
@@ -60,6 +62,7 @@ export default function EditCategory() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (!id) {
       setMessage("Category ID is missing.");
       return;
@@ -78,14 +81,17 @@ export default function EditCategory() {
 
       const categoryPayload: UpdateCategoryType = {
         name: name.trim(),
-        description: description.trim() ? description.trim() : undefined,
-        image: finalImage ? finalImage : undefined,
+        description: description.trim() || undefined,
+        image: finalImage || undefined,
       };
 
       await updateCategory(id, categoryPayload);
       navigate("/categories");
     } catch (error: unknown) {
-      const err = error as { response?: { data?: { message?: string } } };
+      const err = error as {
+        response?: { data?: { message?: string } };
+      };
+
       setMessage(
         err.response?.data?.message ??
           "Failed to update category. Please check your inputs."
@@ -96,78 +102,97 @@ export default function EditCategory() {
   };
 
   const inputStyle =
-    "w-full rounded-xl border border-neutral-200 bg-neutral-50 py-3 px-4 text-xs text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900 focus:bg-white focus:ring-1 focus:ring-neutral-900";
+    "w-full rounded-xl border border-[#E8DED3] bg-[#FBF8F3] px-4 py-3 text-sm text-[#351D1D] outline-none transition placeholder:text-[#B6A394] focus:border-[#8B2635] focus:bg-white focus:ring-1 focus:ring-[#8B2635]";
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-white font-sans text-xs font-semibold text-neutral-400">
-        Loading category specifications...
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-[#FBF8F3] font-sans">
+        <Beef className="h-9 w-9 animate-pulse text-[#8B2635]" />
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#927D70]">
+          Loading Category...
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="relative min-h-screen bg-white font-sans text-neutral-900 px-4 py-12 selection:bg-neutral-900 selection:text-white">
-      
-      {/* Top Banner */}
-      <div className="absolute top-0 inset-x-0 bg-neutral-900 text-white text-[11px] py-2 px-4 text-center font-medium tracking-wide">
-        Category Specification Portal — The Butcher's Shop
+    <div className="min-h-screen bg-[#FBF8F3] px-4 py-10 font-sans text-[#351D1D] sm:px-6 lg:py-14">
+      <div className="fixed inset-x-0 top-0 z-20 bg-[#351D1D] px-4 py-2.5 text-center text-[10px] font-bold uppercase tracking-[0.2em] text-white">
+        Butcher Shop — Online Category Management
       </div>
 
-      <div className="relative mx-auto max-w-5xl mt-6">
-        {/* Header Bar */}
-        <div className="mb-8 flex items-center justify-between border-b border-neutral-100 pb-6">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-900 text-white shadow-sm">
-              <span className="font-black tracking-tighter text-base">BS</span>
+      <div className="mx-auto mt-7 max-w-5xl">
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-[#E8DED3] pb-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#8B2635] text-white shadow-md">
+              <span className="text-base font-black tracking-tighter">BS</span>
             </div>
-            <span className="text-xl font-black tracking-tighter uppercase">The Butcher's Shop</span>
+
+            <div>
+              <h2 className="text-lg font-black uppercase tracking-tight text-[#351D1D]">
+                Butcher Shop
+              </h2>
+              <p className="text-[10px] font-semibold text-[#927D70]">
+                Quality You Can Taste
+              </p>
+            </div>
           </div>
 
           <button
             type="button"
             onClick={() => navigate("/categories")}
-            className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-4 py-2 text-xs font-semibold text-neutral-700 transition hover:border-neutral-900 hover:text-neutral-900 shadow-sm"
+            className="inline-flex items-center gap-2 rounded-xl border border-[#E8DED3] bg-white px-4 py-3 text-xs font-bold text-[#6D5B52] shadow-sm transition hover:border-[#8B2635] hover:text-[#8B2635]"
           >
-            <ArrowLeft size={15} /> Back to Categories
+            <ArrowLeft size={15} />
+            Back to Categories
           </button>
         </div>
 
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-start">
-          {/* Left Hero Column */}
-          <div className="flex flex-col justify-between rounded-2xl border border-neutral-200 bg-neutral-50/50 p-8 lg:col-span-5 lg:p-10">
+        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
+          <div className="flex flex-col justify-between rounded-2xl border border-[#E8DED3] bg-[#F4EEE6] p-8 lg:col-span-5 lg:p-10">
             <div>
-              <span className="inline-block px-3 py-1 mb-6 rounded-full bg-neutral-200/60 text-[10px] font-bold tracking-widest uppercase text-neutral-700">
+              <span className="mb-6 inline-block rounded-full bg-white px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-widest text-[#8B2635]">
                 Category Manager
               </span>
 
-              <h1 className="text-3xl font-black tracking-tight text-neutral-900 sm:text-4xl leading-tight">
-                EDIT CATEGORY <br />
-                <span className="text-neutral-400">SPECIFICATIONS</span>
+              <h1 className="text-3xl font-black leading-tight tracking-tight text-[#351D1D] sm:text-4xl">
+                EDIT CATEGORY
+                <br />
+                <span className="text-[#8B2635]">SPECIFICATIONS</span>
               </h1>
 
-              <p className="mt-4 text-xs leading-relaxed text-neutral-600">
-                Update category titles, descriptions, and cover image media assets across your catalog.
+              <p className="mt-5 text-sm leading-7 text-[#6D5B52]">
+                Update category names, descriptions, and cover images displayed in your online product catalog.
               </p>
             </div>
 
-            <div className="mt-12 rounded-xl border border-neutral-200 bg-white p-5 shadow-sm space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Category Identifier</span>
-              <p className="font-mono text-xs text-neutral-800 break-all">{id}</p>
+            <div className="mt-12 space-y-2 rounded-xl border border-[#E8DED3] bg-white p-5 shadow-sm">
+              <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#927D70]">
+                Category Identifier
+              </span>
+              <p className="break-all font-mono text-xs text-[#351D1D]">
+                {id}
+              </p>
             </div>
           </div>
 
-          {/* Right Column Form */}
-          <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-xl shadow-neutral-100 sm:p-8 lg:col-span-7">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold tracking-tight text-neutral-900">Category Details</h2>
-              <p className="mt-1 text-xs text-neutral-500">Modify the fields below to update this category.</p>
+          <div className="rounded-2xl border border-[#E8DED3] bg-white p-6 shadow-sm sm:p-8 lg:col-span-7">
+            <div className="mb-7">
+              <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#927D70]">
+                Update Collection
+              </span>
+              <h2 className="mt-2 text-2xl font-black tracking-tight text-[#351D1D]">
+                Category Details
+              </h2>
+              <p className="mt-2 text-xs text-[#927D70]">
+                Modify the information customers see when browsing this category.
+              </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label htmlFor="category-name" className="mb-1.5 block text-xs font-semibold text-neutral-700">
-                  Category Name <span className="text-red-500">*</span>
+                <label htmlFor="category-name" className="mb-2 block text-xs font-bold text-[#6D5B52]">
+                  Category Name <span className="text-[#8B2635]">*</span>
                 </label>
                 <input
                   id="category-name"
@@ -180,8 +205,9 @@ export default function EditCategory() {
               </div>
 
               <div>
-                <label htmlFor="category-description" className="mb-1.5 block text-xs font-semibold text-neutral-700">
-                  Description <span className="text-neutral-400 font-normal">(Optional)</span>
+                <label htmlFor="category-description" className="mb-2 block text-xs font-bold text-[#6D5B52]">
+                  Description{" "}
+                  <span className="font-normal text-[#B6A394]">(Optional)</span>
                 </label>
                 <textarea
                   id="category-description"
@@ -192,7 +218,6 @@ export default function EditCategory() {
                 />
               </div>
 
-              {/* REUSABLE IMAGE SELECTOR COMPONENT */}
               <div className="pt-2">
                 <ImageSelector
                   imagePreview={imagePreview}
@@ -208,12 +233,11 @@ export default function EditCategory() {
                 </div>
               )}
 
-              {/* Action Buttons */}
-              <div className="flex items-center gap-3 pt-4">
+              <div className="flex flex-col gap-3 pt-3 sm:flex-row">
                 <button
                   type="button"
                   onClick={() => navigate("/categories")}
-                  className="flex-1 rounded-xl border border-neutral-200 bg-white py-3.5 text-xs font-semibold text-neutral-700 transition hover:border-neutral-900 hover:text-neutral-900 shadow-sm"
+                  className="flex-1 rounded-xl border border-[#E8DED3] bg-white py-3.5 text-xs font-bold text-[#6D5B52] shadow-sm transition hover:border-[#8B2635] hover:text-[#8B2635]"
                 >
                   Cancel
                 </button>
@@ -222,9 +246,10 @@ export default function EditCategory() {
                   <button
                     type="submit"
                     disabled={saving}
-                    className="flex-1 rounded-xl bg-neutral-900 py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-md transition hover:bg-neutral-800 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50 inline-flex items-center justify-center gap-2"
+                    className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#8B2635] py-3.5 text-xs font-extrabold uppercase tracking-wider text-white shadow-md transition hover:bg-[#6F1D2A] disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <Save size={14} /> {saving ? "Saving Changes..." : "Save Changes"}
+                    <Save size={15} />
+                    {saving ? "Saving Changes..." : "Save Changes"}
                   </button>
                 )}
               </div>

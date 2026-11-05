@@ -1,264 +1,340 @@
-import { useEffect, useState, useRef } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import api from "../../api/api";
-import {  ShieldCheck, User, LogOut, LogIn, UserPlus, Menu, X, ChevronDown } from "lucide-react";
 
-interface LoggedInUser {
-  id: string;
-  name?: string;
-  email?: string;
-}
+import { useEffect, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Menu, X, ShoppingCart, ChevronDown, User, LogOut, LayoutDashboard } from "lucide-react";
+import  api  from "../../api/api";
 
 interface Category {
   id: string;
   name: string;
 }
 
-export default function Header() {
-  const navigate = useNavigate();
-  const [user, setUser] = useState<LoggedInUser | null>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+interface UserData {
+  name?: string;
+  email?: string;
+}
 
-  useEffect(() => {
-    const loadUser = () => {
+const Header = () => {
+  const navigate = useNavigate();
+
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [user, setUser] = useState<UserData | null>(null);
+  const [role, setRole] = useState<string | null>(
+    localStorage.getItem("role")
+  );
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [categoryMenuOpen, setCategoryMenuOpen] = useState(false);
+
+  const isAdmin = user !== null && role === "ADMIN";
+  const isUser = user !== null && role === "USER";
+
+  // Load user and role from localStorage
+  const loadUser = () => {
+    const savedUser = localStorage.getItem("user");
+    const savedRole = localStorage.getItem("role");
+
+    if (savedUser) {
       try {
-        const saved = localStorage.getItem("user");
-        setUser(saved ? JSON.parse(saved) : null);
+        setUser(JSON.parse(savedUser));
       } catch {
         setUser(null);
       }
-    };
+    } else {
+      setUser(null);
+    }
 
-    const fetchCategories = async () => {
-      try {
-        const response = await api.get("/categories/");
-        setCategories(response.data.data || response.data);
-      } catch (error) {
-        console.error("Failed to fetch header categories:", error);
+    setRole(savedRole);
+  };
+
+  // Fetch categories
+  const loadCategories = async () => {
+    try {
+      const response = await api.get("/categories/");
+
+      const result = response.data?.data || response.data;
+
+      if (Array.isArray(result)) {
+        setCategories(result);
       }
-    };
+    } catch (error) {
+      console.error("Failed to fetch categories:", error);
+    }
+  };
 
+  useEffect(() => {
     loadUser();
-    void fetchCategories();
+    loadCategories();
 
-    window.addEventListener("storage", loadUser);
-    window.addEventListener("auth-changed", loadUser);
-
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setCategoryDropdownOpen(false);
-      }
+    const handleAuthChange = () => {
+      loadUser();
     };
-    document.addEventListener("mousedown", handleClickOutside);
+
+    window.addEventListener("storage", handleAuthChange);
+    window.addEventListener("auth-changed", handleAuthChange);
 
     return () => {
-      window.removeEventListener("storage", loadUser);
-      window.removeEventListener("auth-changed", loadUser);
-      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("storage", handleAuthChange);
+      window.removeEventListener("auth-changed", handleAuthChange);
     };
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("accessToken");
-    setUser(null);
-    setMenuOpen(false);
-    setCategoryDropdownOpen(false);
-    window.dispatchEvent(new Event("auth-changed"));
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    navigate("/login");
+  // Logout
+  const handleLogout = async () => {
+    try {
+      await api.post("/auth/logout");
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      localStorage.removeItem("user");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("role");
+
+      setUser(null);
+      setRole(null);
+      setMobileMenuOpen(false);
+
+      window.dispatchEvent(new Event("auth-changed"));
+      navigate("/login");
+    }
   };
 
-  const handleNavClick = () => {
-    setMenuOpen(false);
-    setCategoryDropdownOpen(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const closeMenus = () => {
+    setMobileMenuOpen(false);
+    setCategoryMenuOpen(false);
   };
 
-  const handleCategorySelect = (categoryId: string) => {
-    setCategoryDropdownOpen(false);
-    setMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    navigate(`/categories/${categoryId}/products`);
-  };
-
-  const linkClass = ({ isActive }: { isActive: boolean }) =>
-    `rounded-xl px-3.5 py-2 text-xs font-semibold transition ${
+  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+    `transition-colors duration-200 ${
       isActive
-        ? "bg-neutral-900 text-white shadow-sm"
-        : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
+        ? "text-[#8B2635] font-semibold"
+        : "text-[#332B28] hover:text-[#8B2635]"
     }`;
 
-  const navLinks = (
+  const navigation = (
     <>
-      <NavLink to="/home" className={linkClass} onClick={handleNavClick}>
+      <NavLink to="/home" className={navLinkClass} onClick={closeMenus}>
         Home
       </NavLink>
 
-      {/* Categories Dropdown */}
-      <div className="relative" ref={dropdownRef}>
+      <div className="relative">
         <button
           type="button"
-          onClick={() => setCategoryDropdownOpen((prev) => !prev)}
-          className="flex items-center gap-1 rounded-xl px-3.5 py-2 text-xs font-semibold text-neutral-600 transition hover:bg-neutral-100 hover:text-neutral-900"
+          onClick={() => setCategoryMenuOpen(!categoryMenuOpen)}
+          className="flex items-center gap-1 text-[#332B28] transition-colors hover:text-[#8B2635]"
         >
           Categories
-          <ChevronDown size={14} className={`transition-transform duration-200 ${categoryDropdownOpen ? "rotate-180" : ""}`} />
+          <ChevronDown
+            size={16}
+            className={`transition-transform ${
+              categoryMenuOpen ? "rotate-180" : ""
+            }`}
+          />
         </button>
 
-        {categoryDropdownOpen && (
-          <div className="absolute left-0 mt-2 w-56 rounded-2xl border border-neutral-200 bg-white p-2 shadow-xl z-50">
-            <NavLink
+        {categoryMenuOpen && (
+          <div className="absolute left-0 top-full z-50 mt-3 w-56 rounded-xl border border-[#E8DED3] bg-white p-2 shadow-xl">
+            <Link
               to="/categories"
-              onClick={handleNavClick}
-              className="block rounded-xl px-3 py-2 text-xs font-bold text-neutral-900 hover:bg-neutral-50 transition"
+              onClick={closeMenus}
+              className="block rounded-lg px-4 py-2 text-sm font-semibold text-[#8B2635] hover:bg-[#F8F1EA]"
             >
-              View All Categories →
-            </NavLink>
-            <div className="my-1 border-t border-neutral-100" />
-            <div className="max-h-60 overflow-y-auto space-y-1 pr-1 custom-scrollbar">
-              {categories.length === 0 ? (
-                <div className="px-3 py-2 text-xs text-neutral-400">No categories found</div>
-              ) : (
-                categories.map((cat) => (
-                  <button
-                    key={cat.id}
-                    onClick={() => handleCategorySelect(cat.id)}
-                    className="w-full text-left rounded-xl px-3 py-2 text-xs font-medium text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 transition truncate"
-                  >
-                    {cat.name}
-                  </button>
-                ))
-              )}
-            </div>
+              All Categories
+            </Link>
+
+            {categories.map((category) => (
+              <Link
+                key={category.id}
+                to={`/categories/${category.id}/products`}
+                onClick={closeMenus}
+                className="block rounded-lg px-4 py-2 text-sm text-[#332B28] hover:bg-[#F8F1EA]"
+              >
+                {category.name}
+              </Link>
+            ))}
           </div>
         )}
       </div>
 
-      <NavLink to="/product" className={linkClass} onClick={handleNavClick}>
+      <NavLink to="/product" className={navLinkClass} onClick={closeMenus}>
         Products
       </NavLink>
-      {user && (
-        <NavLink to="/cart" className={linkClass} onClick={handleNavClick}>
-          Cart
+
+      {isAdmin && (
+        <NavLink
+          to="/admin"
+          className={navLinkClass}
+          onClick={closeMenus}
+        >
+          <span className="flex items-center gap-2">
+            <LayoutDashboard size={17} />
+            Admin Dashboard
+          </span>
         </NavLink>
       )}
 
-      {/* Admin Panel Nav Link */}
-      {localStorage.getItem("role") === "ADMIN" && (
-        <NavLink to="/admin" className={linkClass} onClick={handleNavClick}>
-          <ShieldCheck size={14} className="inline mr-1" /> Admin Dashboard
+      {user && (
+        <NavLink to="/cart" className={navLinkClass} onClick={closeMenus}>
+          <span className="flex items-center gap-2">
+            <ShoppingCart size={17} />
+            Cart
+          </span>
         </NavLink>
       )}
     </>
   );
 
   return (
-    <motion.header
-      initial={{ opacity: 0, y: -12 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="sticky top-0 z-40 border-b border-neutral-200 bg-white/90 font-sans shadow-sm backdrop-blur-xl"
-    >
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3.5 sm:px-6 lg:px-8">
-        
-        {/* Brand Logo */}
-        <Link
-          to="/home"
-          onClick={handleNavClick}
-          className="flex items-center gap-2.5 text-lg font-black tracking-tight text-neutral-900 uppercase"
-        >
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-neutral-900 text-white shadow-sm">
-            <span className="font-black tracking-tighter text-base">BS</span>
-          </div>
-          <span>The Butcher's Shop</span>
-        </Link>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-1.5 md:flex">{navLinks}</nav>
-
-        {/* User / Auth Buttons */}
-        <div className="hidden items-center gap-3 md:flex">
-          {user ? (
-            <>
-              <span className="max-w-36 truncate text-xs font-semibold text-neutral-700 flex items-center gap-1">
-                <User size={13} /> Hi, {user.name || user.email || "User"}
-              </span>
-              <button
-                onClick={handleLogout}
-                className="rounded-xl border border-red-200 bg-white px-3.5 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50 shadow-sm inline-flex items-center gap-1.5"
-              >
-                <LogOut size={13} /> Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/login"
-                onClick={handleNavClick}
-                className="rounded-xl border border-neutral-200 bg-white px-4 py-2 text-xs font-semibold text-neutral-800 transition hover:border-neutral-900 shadow-sm inline-flex items-center gap-1.5"
-              >
-                <LogIn size={13} /> Login
-              </Link>
-              <Link
-                to="/register"
-                onClick={handleNavClick}
-                className="rounded-xl bg-neutral-900 px-4 py-2 text-xs font-bold uppercase tracking-wider text-white shadow-md transition hover:bg-neutral-800 inline-flex items-center gap-1.5"
-              >
-                <UserPlus size={13} /> Register
-              </Link>
-            </>
-          )}
-        </div>
-
-        {/* Mobile Menu Toggle */}
-        <button
-          type="button"
-          onClick={() => setMenuOpen((open) => !open)}
-          className="rounded-xl border border-neutral-200 bg-white p-2 text-neutral-800 md:hidden hover:border-neutral-900 shadow-sm"
-          aria-label="Toggle navigation"
-          aria-expanded={menuOpen}
-        >
-          {menuOpen ? <X size={18} /> : <Menu size={18} />}
-        </button>
+    <header className="relative z-50 w-full bg-[#FBF8F3]">
+      {/* Announcement bar */}
+      <div className="bg-[#351D1D] px-4 py-2 text-center text-xs tracking-wide text-white sm:text-sm">
+        Fresh quality meat delivered to your doorstep
       </div>
 
-      {/* Mobile Drawer Menu */}
-      {menuOpen && (
-        <nav className="flex flex-col gap-1.5 border-t border-neutral-200 bg-white p-4 md:hidden shadow-lg">
-          {navLinks}
-          <div className="mt-2 flex gap-2 border-t border-neutral-100 pt-3">
+      {/* Main header */}
+      <div className="border-b border-[#E8DED3]">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+          {/* Logo */}
+          <Link
+            to={user ? "/home" : "/"}
+            className="flex items-center gap-3"
+            onClick={closeMenus}
+          >
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#8B2635] text-lg font-bold text-white">
+              BS
+            </div>
+
+            <div>
+              <h1 className="text-xl font-bold tracking-tight text-[#351D1D] sm:text-2xl">
+                The Butcher's Shop
+              </h1>
+            </div>
+          </Link>
+
+          {/* Desktop navigation */}
+          <nav className="hidden items-center gap-7 text-sm font-medium lg:flex">
+            {navigation}
+          </nav>
+
+          {/* Desktop account section */}
+          <div className="hidden items-center gap-3 lg:flex">
             {user ? (
-              <button
-                onClick={handleLogout}
-                className="w-full rounded-xl border border-red-200 bg-red-50 py-2.5 text-xs font-semibold text-red-600 inline-flex items-center justify-center gap-1.5"
-              >
-                <LogOut size={13} /> Logout
-              </button>
+              <>
+                <div className="flex items-center gap-2">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#EFE5DB] text-[#8B2635]">
+                    <User size={18} />
+                  </div>
+
+                  <div>
+                    <p className="max-w-32 truncate text-sm font-semibold text-[#351D1D]">
+                      {user.name || user.email || "Account"}
+                    </p>
+                    <p className="text-xs text-[#927D70]">
+                      {isAdmin
+                        ? "Administrator"
+                        : isUser
+                          ? "Customer"
+                          : "Account"}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 rounded-lg border border-[#8B2635] px-4 py-2 text-sm font-semibold text-[#8B2635] transition hover:bg-[#8B2635] hover:text-white"
+                >
+                  <LogOut size={16} />
+                  Logout
+                </button>
+              </>
             ) : (
               <>
                 <Link
                   to="/login"
-                  onClick={handleNavClick}
-                  className="flex-1 rounded-xl border border-neutral-200 bg-white py-2.5 text-center text-xs font-semibold text-neutral-800 shadow-sm"
+                  className="px-4 py-2 text-sm font-semibold text-[#351D1D] transition hover:text-[#8B2635]"
                 >
                   Login
                 </Link>
+
                 <Link
                   to="/register"
-                  onClick={handleNavClick}
-                  className="flex-1 rounded-xl bg-neutral-900 py-2.5 text-center text-xs font-bold uppercase tracking-wider text-white shadow-md"
+                  className="rounded-lg bg-[#8B2635] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#6F1D2A]"
                 >
                   Register
                 </Link>
               </>
             )}
           </div>
-        </nav>
+
+          {/* Mobile menu button */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="rounded-lg p-2 text-[#351D1D] hover:bg-[#EFE5DB] lg:hidden"
+            aria-label="Toggle navigation menu"
+          >
+            {mobileMenuOpen ? <X size={25} /> : <Menu size={25} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile navigation */}
+      {mobileMenuOpen && (
+        <div className="border-b border-[#E8DED3] bg-[#FBF8F3] px-5 py-5 shadow-lg lg:hidden">
+          <nav className="flex flex-col gap-5 text-sm font-medium">
+            {navigation}
+          </nav>
+
+          <div className="mt-6 border-t border-[#E8DED3] pt-5">
+            {user ? (
+              <div className="space-y-4">
+                <div>
+                  <p className="font-semibold text-[#351D1D]">
+                    {user.name || user.email || "Account"}
+                  </p>
+                  <p className="text-xs text-[#927D70]">
+                    {isAdmin
+                      ? "Administrator"
+                      : isUser
+                        ? "Customer"
+                        : "Account"}
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#8B2635] px-4 py-3 font-semibold text-white transition hover:bg-[#6F1D2A]"
+                >
+                  <LogOut size={17} />
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className="flex gap-3">
+                <Link
+                  to="/login"
+                  onClick={closeMenus}
+                  className="flex-1 rounded-lg border border-[#8B2635] py-3 text-center font-semibold text-[#8B2635]"
+                >
+                  Login
+                </Link>
+
+                <Link
+                  to="/register"
+                  onClick={closeMenus}
+                  className="flex-1 rounded-lg bg-[#8B2635] py-3 text-center font-semibold text-white"
+                >
+                  Register
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
       )}
-    </motion.header>
+    </header>
   );
-}
+};
+
+export default Header;
